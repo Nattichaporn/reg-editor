@@ -1,0 +1,1975 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KMITL Reg Redesign</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Sarabun:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --accent:#E1650C;
+    --accent-ink:#8A3D06;
+    --accent-soft:#FBE4CE;
+    --bg:#FBF7F1;
+    --surface:#FFFFFF;
+    --surface-2:#F4EEE3;
+    --ink:#221E16;
+    --ink-soft:#5F5A4C;
+    --ink-faint:#8B8574;
+    --border:#E7DFCE;
+    --border-strong:#D7CBAE;
+    --good:#1E8A4C;
+    --good-soft:#DFF3E6;
+    --warn:#A56A05;
+    --warn-soft:#FBEBCB;
+    --bad:#C13B2C;
+    --bad-soft:#FBE3DE;
+    --group1:#8A4FBF; --group1-soft:#EEE3F8;
+    --group2:#1D7FA6; --group2-soft:#DCEEF5;
+    --group3:#B0762A; --group3-soft:#F6E8D3;
+    --group4:#2E8B6B; --group4-soft:#DDF1E8;
+    --hyflex:#4C5FD5; --hyflex-soft:#E7E9FB;
+    --shadow:0 1px 2px rgba(34,30,22,0.06), 0 8px 24px -12px rgba(34,30,22,0.18);
+    --radius-s:8px;
+    --radius-m:14px;
+    --radius-l:20px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --accent:#F5883E;
+      --accent-ink:#FFD9B0;
+      --accent-soft:#402107;
+      --bg:#17140F;
+      --surface:#211C15;
+      --surface-2:#2A2318;
+      --ink:#F3EEE3;
+      --ink-soft:#C9C0AC;
+      --ink-faint:#8F8873;
+      --border:#3A3223;
+      --border-strong:#4C4229;
+      --good:#5FCB8C;
+      --good-soft:#183625;
+      --warn:#E3B34C;
+      --warn-soft:#3A2C0D;
+      --bad:#F08A79;
+      --bad-soft:#3E1E17;
+      --group1:#C298EC; --group1-soft:#332345;
+      --group2:#79C2E8; --group2-soft:#183440;
+      --group3:#E3B267; --group3-soft:#3A2C11;
+      --group4:#7FD1AD; --group4-soft:#173428;
+      --hyflex:#A9B4FF; --hyflex-soft:#262C52;
+      --shadow:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --accent:#F5883E;
+    --accent-ink:#FFD9B0;
+    --accent-soft:#402107;
+    --bg:#17140F;
+    --surface:#211C15;
+    --surface-2:#2A2318;
+    --ink:#F3EEE3;
+    --ink-soft:#C9C0AC;
+    --ink-faint:#8F8873;
+    --border:#3A3223;
+    --border-strong:#4C4229;
+    --good:#5FCB8C;
+    --good-soft:#183625;
+    --warn:#E3B34C;
+    --warn-soft:#3A2C0D;
+    --bad:#F08A79;
+    --bad-soft:#3E1E17;
+    --group1:#C298EC; --group1-soft:#332345;
+    --group2:#79C2E8; --group2-soft:#183440;
+    --group3:#E3B267; --group3-soft:#3A2C11;
+    --group4:#7FD1AD; --group4-soft:#173428;
+    --hyflex:#A9B4FF; --hyflex-soft:#262C52;
+    --shadow:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Sarabun","Noto Sans Thai",system-ui,sans-serif;
+    font-size:15px;
+    line-height:1.55;
+    margin:0;
+    padding-inline:16px;
+    padding-block:20px 40px;
+  }
+  h1,h2,h3{
+    font-family:"Chakra Petch","Sarabun",sans-serif;
+    font-weight:600;
+    text-wrap:balance;
+    margin:0;
+  }
+  .wrap{max-width:1160px;margin-inline:auto}
+  a{color:var(--accent-ink)}
+  .tabular{font-variant-numeric:tabular-nums}
+
+  /* ---- top bar ---- */
+  .topbar{
+    position:sticky;
+    top:env(safe-area-inset-top,0px);
+    z-index:20;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-m);
+    box-shadow:var(--shadow);
+    padding:12px 16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  html{scroll-behavior:smooth}
+  #history-section{scroll-margin-top:calc(84px + env(safe-area-inset-top,0px))}
+  .jump-link{
+    font-size:12.5px;font-weight:600;text-decoration:none;
+    color:var(--accent-ink);background:var(--surface-2);border:1px solid var(--border-strong);
+    padding:6px 12px;border-radius:999px;white-space:nowrap;
+  }
+  .jump-link:hover{background:var(--accent-soft,var(--surface-2));border-color:var(--accent)}
+  .jump-top{font-size:12.5px;font-weight:600;text-decoration:none;display:inline-block;margin-top:10px}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .mark{
+    width:38px;height:38px;border-radius:10px;
+    background:linear-gradient(155deg,var(--accent),var(--accent-ink));
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Chakra Petch";font-weight:700;color:#fff;font-size:13px;flex:none;
+  }
+  .topbar-title{font-size:16px;font-weight:600}
+  .topbar-sub{font-size:12.5px;color:var(--ink-soft)}
+  .pill{
+    font-family:"Chakra Petch";font-size:11.5px;font-weight:600;letter-spacing:.03em;
+    padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent-ink);
+    white-space:nowrap;
+  }
+  .term-pill{
+    margin-left:auto;
+    display:flex;align-items:center;gap:8px;
+    font-size:13px;color:var(--ink-soft);
+    background:var(--surface-2);border:1px solid var(--border);
+    border-radius:999px;padding:6px 12px;
+  }
+  .term-pill b{color:var(--ink);font-weight:600}
+
+  /* ---- concept banner ---- */
+  .banner{
+    background:var(--surface-2);
+    border:1px dashed var(--border-strong);
+    border-radius:var(--radius-m);
+    padding:12px 16px;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:20px;
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .banner svg{flex:none;margin-top:2px;color:var(--accent-ink)}
+  .banner strong{color:var(--ink)}
+
+  /* ---- layout ---- */
+  .layout{
+    display:grid;
+    grid-template-columns:1fr 340px;
+    gap:20px;
+    align-items:start;
+  }
+  @media (max-width:880px){
+    .layout{grid-template-columns:1fr}
+  }
+
+  section.card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-l);
+    box-shadow:var(--shadow);
+    padding:18px;
+    margin-bottom:20px;
+  }
+  section.card > h2{font-size:17px;margin-bottom:4px}
+  .card-desc{color:var(--ink-soft);font-size:13px;margin-bottom:14px}
+
+  /* ---- track tabs ---- */
+  .tabs{
+    display:flex;gap:8px;background:var(--surface-2);border:1px solid var(--border);
+    border-radius:var(--radius-m);padding:5px;margin-bottom:14px;
+  }
+  .tab{
+    flex:1;text-align:center;
+    font-family:"Chakra Petch";font-weight:600;font-size:13px;
+    border:0;background:transparent;color:var(--ink-soft);
+    border-radius:var(--radius-s);padding:10px 12px;cursor:pointer;
+  }
+  .tab[aria-selected="true"]{
+    background:var(--surface);color:var(--accent-ink);box-shadow:var(--shadow);
+  }
+
+  /* ---- filters ---- */
+  .filters{
+    display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;
+  }
+  .search-box{
+    flex:1 1 220px;
+    display:flex;align-items:center;gap:8px;
+    background:var(--surface-2);border:1px solid var(--border);
+    border-radius:var(--radius-s);padding:9px 12px;
+  }
+  .search-box svg{flex:none;color:var(--ink-faint)}
+  .search-box input{
+    border:0;background:transparent;outline:0;color:var(--ink);
+    font-family:inherit;font-size:14px;width:100%;
+  }
+  .chip{
+    font-family:"Chakra Petch";font-size:12.5px;font-weight:600;
+    border:1px solid var(--border-strong);background:var(--surface);color:var(--ink-soft);
+    border-radius:999px;padding:7px 13px;cursor:pointer;
+  }
+  .chip[aria-pressed="true"]{
+    background:var(--accent);border-color:var(--accent);color:#fff;
+  }
+  .chip-select{
+    font-family:"Chakra Petch";font-size:12.5px;font-weight:600;
+    border:1px solid var(--border-strong);background:var(--surface);color:var(--ink-soft);
+    border-radius:999px;padding:7px 12px;cursor:pointer;
+  }
+  .chip-select:disabled{opacity:.45;cursor:not-allowed}
+  .chip:focus-visible, .btn:focus-visible, input:focus-visible, .tab:focus-visible, .sec-card:focus-visible, .chip-select:focus-visible{
+    outline:2px solid var(--accent-ink);outline-offset:2px;
+  }
+  .filter-hint{
+    font-size:12px;color:var(--ink-faint);margin-bottom:14px;
+  }
+
+  /* ---- gened skill-group filter row ---- */
+  .group-filters{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    margin-bottom:14px;padding:10px 12px;
+    background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-s);
+  }
+  .group-filters-label{font-size:12.3px;color:var(--ink-soft);font-weight:600;flex:none}
+  .group-filters-chips{display:flex;gap:7px;flex-wrap:wrap;flex:1 1 auto}
+  .group-chip{
+    font-family:"Chakra Petch";font-size:12px;font-weight:600;
+    border:1.5px solid var(--border-strong);background:var(--surface);color:var(--ink-soft);
+    border-radius:999px;padding:6px 12px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .group-chip .group-dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .group-chip[aria-pressed="true"]{color:#fff;border-color:transparent}
+  .group-chip.g-identity[aria-pressed="true"]{background:var(--group1)}
+  .group-chip.g-personal[aria-pressed="true"]{background:var(--group2)}
+  .group-chip.g-management[aria-pressed="true"]{background:var(--group3)}
+  .group-chip.g-language[aria-pressed="true"]{background:var(--group4)}
+  .group-chip[aria-pressed="true"] .group-dot{background:#fff}
+  .hyflex-chip[aria-pressed="true"]{background:var(--hyflex);border-color:var(--hyflex)}
+
+  /* ---- gened group header ---- */
+  .group-head{
+    display:flex;align-items:center;gap:9px;
+    margin:18px 0 10px;
+  }
+  .group-head:first-child{margin-top:2px}
+  .group-dot{width:10px;height:10px;border-radius:50%;flex:none}
+  .group-name{font-weight:600;font-size:14px}
+  .group-name-en{font-size:11.5px;color:var(--ink-faint);font-weight:400}
+  .group-count{
+    margin-left:auto;font-family:"Chakra Petch";font-size:11.5px;font-weight:600;
+    color:var(--ink-faint);
+  }
+
+  /* ---- course card ---- */
+  .course{
+    border:1px solid var(--border);border-radius:var(--radius-m);
+    padding:14px 16px;margin-bottom:12px;background:var(--surface);
+    border-left:3px solid var(--border-strong);
+  }
+  .course.g-identity{border-left-color:var(--group1)}
+  .course.g-personal{border-left-color:var(--group2)}
+  .course.g-management{border-left-color:var(--group3)}
+  .course.g-language{border-left-color:var(--group4)}
+  .course-head{
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;
+  }
+  .course-code{font-family:"Chakra Petch";font-weight:700;color:var(--accent-ink);font-size:13px;letter-spacing:.02em}
+  .course-name{font-weight:600;font-size:15.5px;margin-top:2px}
+  .course-name-en{font-size:12.5px;color:var(--ink-faint)}
+  .credit-tag{
+    font-family:"Chakra Petch";font-size:12px;font-weight:600;color:var(--ink-soft);
+    background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-s);
+    padding:4px 9px;height:fit-content;white-space:nowrap;
+  }
+  .sec-label-row{
+    font-family:"Chakra Petch";font-size:11px;font-weight:700;letter-spacing:.05em;
+    color:var(--ink-faint);text-transform:uppercase;margin-bottom:8px;
+  }
+  .sections{display:flex;flex-direction:column;gap:10px}
+
+  /* ---- section picker card ---- */
+  .sec-card{
+    border:2px solid var(--border);border-radius:var(--radius-m);
+    background:var(--surface-2);padding:12px 14px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .sec-card.selected{
+    border-color:var(--accent);background:var(--accent-soft);
+  }
+  .sec-card.blocked{
+    opacity:.55;
+  }
+  .sec-card.blocked .sec-card-bottom .btn{cursor:not-allowed}
+  .block-reason{
+    font-size:12px;color:var(--bad);display:flex;align-items:center;gap:5px;font-weight:600;
+  }
+  .block-reason svg{flex:none}
+  .rule-note{
+    display:flex;gap:8px;align-items:flex-start;
+    font-size:12.3px;color:var(--ink-soft);
+    background:var(--surface-2);border:1px solid var(--border);
+    border-radius:var(--radius-s);padding:9px 11px;margin-bottom:14px;
+  }
+  .rule-note svg{flex:none;margin-top:1px;color:var(--accent-ink)}
+  .hyflex-note{
+    display:flex;gap:8px;align-items:flex-start;
+    font-size:12.3px;color:var(--ink-soft);
+    background:var(--hyflex-soft);border:1px solid var(--hyflex);
+    border-radius:var(--radius-s);padding:9px 11px;margin-bottom:14px;
+  }
+  .hyflex-note svg{flex:none;margin-top:1px;color:var(--hyflex)}
+  .hyflex-note b{color:var(--ink)}
+  .sec-card-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .sec-badge{
+    display:flex;align-items:center;gap:6px;
+    font-family:"Chakra Petch";font-weight:700;font-size:14px;
+    background:var(--surface);border:1.5px solid var(--border-strong);
+    color:var(--ink);border-radius:999px;padding:5px 12px 5px 8px;
+  }
+  .sec-card.selected .sec-badge{
+    background:var(--accent);border-color:var(--accent);color:#fff;
+  }
+  .sec-badge-num{
+    width:20px;height:20px;border-radius:50%;background:var(--border-strong);color:var(--surface);
+    display:flex;align-items:center;justify-content:center;font-size:10px;
+  }
+  .sec-card.selected .sec-badge-num{background:#fff;color:var(--accent-ink)}
+  .sec-type-tag{
+    font-family:"Chakra Petch";font-size:10.5px;font-weight:700;letter-spacing:.02em;
+    border-radius:6px;padding:3px 8px;
+  }
+  .sec-type-tag.lecture{background:var(--group2-soft);color:var(--group2)}
+  .sec-type-tag.lab{background:var(--ink);color:var(--bg)}
+  .sec-type-tag.mixed{background:var(--accent-soft);color:var(--accent-ink)}
+  .sec-type-tag.hyflex{background:var(--hyflex-soft);color:var(--hyflex);display:inline-flex;align-items:center;gap:3px}
+  .sec-type-tag.hyflex svg{flex:none}
+  .sec-check{
+    display:none;align-items:center;gap:4px;
+    font-family:"Chakra Petch";font-size:11px;font-weight:700;color:var(--good);
+  }
+  .sec-card.selected .sec-check{display:flex}
+  .seat-badge{
+    margin-left:auto;
+    font-family:"Chakra Petch";font-size:12px;font-weight:700;
+    border-radius:999px;padding:5px 10px;white-space:nowrap;
+  }
+  .seat-badge.good{background:var(--good-soft);color:var(--good)}
+  .seat-badge.warn{background:var(--warn-soft);color:var(--warn)}
+  .seat-badge.bad{background:var(--bad-soft);color:var(--bad)}
+  .sec-meta{font-size:12.8px;color:var(--ink-soft);line-height:1.6}
+  .sec-meta b{color:var(--ink);font-weight:600}
+  .exam-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+  .exam-chip{
+    font-family:"Chakra Petch";font-size:11.5px;font-weight:700;
+    display:inline-flex;align-items:center;gap:4px;
+    padding:4px 9px;border-radius:6px;background:var(--warn-soft);
+    border:1px solid var(--warn);color:var(--warn);
+  }
+  .exam-chip b{color:inherit;font-weight:800}
+  .exam-chip svg{flex:none}
+  .exam-chip.self{
+    font-weight:600;
+    color:var(--ink-soft);
+    background:var(--surface-2);
+    border-style:dashed;
+    border-color:var(--border-strong);
+  }
+  .exam-chip.self svg{flex:none;color:var(--ink-faint)}
+  .sec-card-bottom{display:flex;justify-content:flex-end}
+  @media (max-width:480px){
+    .sec-card-bottom .btn{width:100%}
+  }
+
+  .btn{
+    font-family:"Chakra Petch";font-weight:600;font-size:12.8px;
+    border-radius:999px;padding:7px 16px;border:1px solid transparent;cursor:pointer;
+    background:var(--accent);color:#fff;white-space:nowrap;
+  }
+  .btn.secondary{
+    background:transparent;border-color:var(--border-strong);color:var(--ink-soft);
+  }
+  .btn.danger{
+    background:transparent;border-color:var(--bad);color:var(--bad);
+  }
+  .btn[disabled]{
+    background:var(--surface-2);color:var(--ink-faint);border-color:var(--border);cursor:not-allowed;
+  }
+  .btn.added{background:var(--good);}
+  .btn.block{width:100%;padding:11px 16px;font-size:13.5px}
+
+  .empty-note{color:var(--ink-faint);font-size:13px;padding:18px 4px;text-align:center}
+
+  /* ---- cart panel ---- */
+  .cart{
+    position:sticky;top:calc(72px + env(safe-area-inset-top,0px));
+  }
+  /* panel never taller than the viewport: only the course list scrolls,
+     the total + confirm buttons stay pinned at the bottom */
+  .cart{
+    display:flex;flex-direction:column;
+    max-height:calc(100vh - 72px - env(safe-area-inset-top,0px) - 16px);
+  }
+  .cart-head{flex:none;display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .cart-head h2{margin-bottom:10px}
+  #cart-body{display:flex;flex-direction:column;min-height:0;flex:1 1 auto}
+  #cart-body > *{flex:none}
+  #cart-body > .cart-state-label{align-self:flex-start}
+  #cart-body > .selected-group{
+    flex:0 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+    scrollbar-gutter:stable;
+  }
+  #cart-body > .cart-total{margin-top:0}
+  @media (max-width:880px){
+    .cart{
+      position:static;max-height:none;
+      /* leaves room below the sticky topbar when scrolled into view from
+         the fixed mobile action bar, so the panel isn't hidden under it */
+      scroll-margin-top:calc(84px + env(safe-area-inset-top,0px));
+    }
+    #cart-body > .selected-group{max-height:55vh}
+  }
+
+  /* ---- fixed mobile action bar ----
+     On narrow screens the cart panel collapses to the bottom of a single
+     column, so the confirm/review/edit action can sit far below the fold.
+     This bar pins that one action to the bottom of the viewport instead. */
+  .mobile-cart-bar{display:none}
+  @media (max-width:880px){
+    .mobile-cart-bar{
+      display:flex;align-items:center;gap:12px;
+      position:fixed;left:0;right:0;bottom:0;z-index:40;
+      padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
+      background:var(--surface);border-top:1px solid var(--border);
+      box-shadow:0 -4px 16px -8px rgba(0,0,0,0.22);
+    }
+    .mobile-cart-info{display:flex;flex-direction:column;flex:none;line-height:1.25}
+    .mobile-cart-count{font-family:"Chakra Petch";font-size:13px;font-weight:700;color:var(--ink)}
+    .mobile-cart-credits{font-size:11.5px;color:var(--ink-soft)}
+    .mobile-cart-bar .btn{flex:1 1 auto}
+    body.has-mobile-cart-bar{padding-bottom:calc(68px + env(safe-area-inset-bottom,0px))}
+  }
+  .cart-state-label{
+    font-family:"Chakra Petch";font-size:11px;font-weight:700;letter-spacing:.04em;
+    text-transform:uppercase;padding:4px 10px;border-radius:999px;
+    display:inline-block;margin-bottom:10px;
+  }
+  .cart-state-label.editing{background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--border)}
+  .cart-state-label.review{background:var(--warn-soft);color:var(--warn)}
+  .cart-state-label.confirmed{background:var(--good-soft);color:var(--good)}
+
+  .selected-group{
+    border:1.5px solid var(--border-strong);border-radius:var(--radius-m);
+    padding:4px;margin-bottom:14px;background:var(--surface-2);
+  }
+  .cart-item{
+    border-left:3px solid var(--accent);border-radius:var(--radius-s);
+    padding:10px 12px;margin:4px;background:var(--surface);
+  }
+  .cart-item + .cart-item{margin-top:4px}
+  .cart-item-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+  .cart-item-title{font-weight:600;font-size:13.5px;display:flex;align-items:center;gap:6px}
+  .cart-item-title svg{flex:none;color:var(--good)}
+  .cart-item-meta{font-size:12px;color:var(--ink-soft);margin-top:2px}
+  .cart-item-actions{margin-top:8px;display:flex;justify-content:flex-end}
+  .confirmed-tag{
+    font-family:"Chakra Petch";font-size:11px;font-weight:700;color:var(--good);
+    display:flex;align-items:center;gap:4px;
+  }
+
+  .success-banner{
+    display:flex;gap:10px;align-items:flex-start;
+    background:var(--good-soft);border:1px solid var(--good);border-radius:var(--radius-m);
+    padding:12px 14px;margin-bottom:14px;color:var(--good);
+  }
+  .success-banner svg{flex:none;margin-top:1px}
+  .success-banner-text{font-size:13px;line-height:1.5}
+  .success-banner-text b{display:block;font-size:14px;margin-bottom:2px}
+
+  .review-note{
+    font-size:12.5px;color:var(--ink-soft);background:var(--warn-soft);color:var(--warn);
+    border-radius:var(--radius-s);padding:9px 12px;margin-bottom:12px;
+  }
+
+  .cart-total{
+    display:flex;justify-content:space-between;align-items:baseline;
+    border-top:1px solid var(--border);margin-top:10px;padding-top:10px;
+    font-family:"Chakra Petch";font-weight:700;font-size:14px;
+  }
+  .cart-total span:last-child{color:var(--accent-ink);font-size:18px}
+  .cart-actions{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+  .cart-actions-row{display:flex;gap:8px}
+  .cart-actions-row .btn{flex:1}
+
+  /* ---- toast ---- */
+  #toast{
+    position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));
+    transform:translate(-50%,12px);
+    background:var(--ink);color:var(--bg);
+    font-size:13px;font-weight:500;
+    padding:10px 18px;border-radius:999px;box-shadow:var(--shadow);
+    opacity:0;pointer-events:none;transition:opacity .18s ease, transform .18s ease;
+    z-index:50;
+  }
+  #toast.show{opacity:1;transform:translate(-50%,0)}
+  @media (prefers-reduced-motion:reduce){
+    #toast{transition:none}
+    .btn, .chip{transition:none}
+  }
+  footer{
+    text-align:center;color:var(--ink-faint);font-size:12px;margin-top:26px;
+  }
+
+  /* ---- history log ---- */
+  .table-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius-m)}
+  .history-table{width:100%;border-collapse:collapse;font-size:12.8px;min-width:760px}
+  .history-table th{
+    font-family:"Chakra Petch";font-size:11px;font-weight:700;letter-spacing:.03em;
+    text-align:left;color:var(--ink-soft);background:var(--surface-2);
+    padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowrap;
+  }
+  .history-table td{
+    padding:9px 12px;border-bottom:1px solid var(--border);color:var(--ink);
+  }
+  .history-table tr:last-child td{border-bottom:0}
+  .history-table tr.row-add td{background:var(--good-soft)}
+  .history-table tr.row-drop td{background:var(--bad-soft)}
+  .history-type{font-weight:700;display:flex;align-items:center;gap:5px;white-space:nowrap}
+  .history-type svg{flex:none}
+  .history-type.add{color:var(--good)}
+  .history-type.drop{color:var(--bad)}
+  .history-schedule{white-space:nowrap}
+  .history-ts{color:var(--ink-faint);font-size:12px;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="mark">REG</div>
+    <div>
+      <div class="topbar-title">ค้นหา &amp; ลงทะเบียนรายวิชา</div>
+      <div class="topbar-sub">ต้นแบบออกแบบใหม่ · โครงการนักศึกษา</div>
+    </div>
+    <span class="pill">Redesign concept</span>
+    <div class="term-pill">
+      ภาคการศึกษา <b>1 / 2568</b>&nbsp;(สิงหาคม–ธันวาคม 2568)
+    </div>
+  </div>
+
+  <div class="banner">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+    <div>
+      <strong>นี่คือต้นแบบ (mockup) ที่ออกแบบใหม่โดยนักศึกษา</strong> สำหรับรายวิชา User Experience and Interface Design ไม่ใช่เว็บไซต์จริงของ reg.kmitl.ac.th
+      รหัส–ชื่อวิชาบังคับอ้างอิงจากระบบจริงที่สำรวจ ส่วนรายวิชา GenEd จัดกลุ่มตามโครงสร้าง 4 กลุ่มทักษะของ สจล. โดยใช้รายวิชาตัวอย่างสาธิตการจัดหมวดหมู่ (หมวด GenEd จริงมีมากกว่า 260 รายวิชาใน 11 ทักษะย่อย) — ในตัวอย่างนี้เพิ่มจำนวนวิชาทั้งบังคับและ GenEd ให้มากขึ้น พร้อมจงใจใส่บางกลุ่มเรียนให้เวลาเรียน/วันสอบตรงกัน เพื่อให้ทดลองกดลงทะเบียนแล้วดูว่าระบบกันชนได้จริง
+      หมู่เรียน เวลา ที่นั่งว่าง และผู้สอนในตัวอย่างนี้จำลองขึ้นเพื่อสาธิตรูปแบบการแสดงผล — หน้าจอหลังล็อกอินไม่ได้ถูกตรวจสอบ เนื่องจากต้องใช้บัญชี KMITL SSO ของผู้ใช้จริง
+    </div>
+  </div>
+
+  <div class="layout">
+    <div>
+      <section class="card">
+        <div class="tabs" role="tablist" aria-label="ประเภทรายวิชา">
+          <button class="tab" id="tab-required" role="tab" aria-selected="true" data-track="required">วิชาบังคับตามหลักสูตร</button>
+          <button class="tab" id="tab-gened" role="tab" aria-selected="false" data-track="gened">วิชาศึกษาทั่วไป (GenEd)</button>
+        </div>
+        <div class="card-desc" id="track-desc"></div>
+        <div class="filters">
+          <label class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="q" type="text" placeholder="ค้นหาชื่อวิชา หรือรหัสวิชา" autocomplete="off">
+          </label>
+          <button class="chip" id="chip-open" aria-pressed="false">ที่นั่งว่าง</button>
+          <select class="chip-select" id="dayFilter" aria-label="กรองตามวัน">
+            <option value="">ทุกวัน</option>
+            <option value="จ">วันจันทร์</option>
+            <option value="อ">วันอังคาร</option>
+            <option value="พ">วันพุธ</option>
+            <option value="พฤ">วันพฤหัสบดี</option>
+            <option value="ศ">วันศุกร์</option>
+            <option value="ส">วันเสาร์</option>
+          </select>
+          <select class="chip-select" id="periodFilter" aria-label="ช่วงเวลา" disabled>
+            <option value="all">ทั้งวัน</option>
+            <option value="morning">ช่วงเช้า (09:00–12:00)</option>
+            <option value="afternoon">ช่วงบ่าย (13:00–16:00)</option>
+            <option value="evening">ช่วงเย็น (17:00–20:00)</option>
+          </select>
+        </div>
+        <div class="filter-hint">เลือกวันที่ต้องการก่อน แล้วจึงเลือกช่วงเวลาได้ — ระบบจะแสดงเฉพาะกลุ่มเรียนที่ตรงกับวัน/ช่วงเวลานั้น</div>
+        <div class="group-filters" id="groupFilters" hidden>
+          <span class="group-filters-label">กรองตามหมวดทักษะ:</span>
+          <div class="group-filters-chips" id="groupFiltersChips"></div>
+          <button class="chip hyflex-chip" id="chip-hyflex" aria-pressed="false">เฉพาะ HyFlex</button>
+        </div>
+        <div id="results"></div>
+        <p id="empty" class="empty-note" hidden>ไม่พบรายวิชาที่ตรงกับคำค้นหา ลองใช้คำอื่น</p>
+      </section>
+    </div>
+
+    <aside class="cart card" id="cart-panel">
+      <div class="cart-head">
+        <h2>รายวิชาที่เลือก</h2>
+        <a class="jump-link" href="#history-section" id="jump-history">ดูประวัติ <span aria-hidden="true">↓</span></a>
+      </div>
+      <div id="cart-body"></div>
+    </aside>
+  </div>
+
+  <section class="card" id="history-section">
+    <h2>ประวัติการลงทะเบียน เพิ่ม/เปลี่ยน/ถอน</h2>
+    <div class="card-desc">บันทึกอัตโนมัติทุกครั้งที่ยืนยันหรือถอนรายวิชา พร้อมเวลาที่ทำรายการ (จำลองจากฟีเจอร์ log ของระบบจริง)</div>
+    <div class="table-scroll">
+      <table class="history-table">
+        <thead>
+          <tr><th>ลำดับ</th><th>ประเภทการลงทะเบียน</th><th>รหัสวิชา</th><th>ชื่อวิชา</th><th>กลุ่ม</th><th>วัน-เวลาเรียน</th><th>เวลาที่ทำรายการ</th></tr>
+        </thead>
+        <tbody id="history-tbody"></tbody>
+      </table>
+    </div>
+    <p id="history-empty" class="empty-note">ยังไม่มีประวัติการทำรายการ — ยืนยันการลงทะเบียนเพื่อเริ่มบันทึก</p>
+    <a href="#" class="jump-top" id="jump-top">↑ กลับขึ้นด้านบน</a>
+  </section>
+
+  <footer>ต้นแบบจัดทำเพื่อประกอบรายวิชา 01236432 User Experience and Interface Design · สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง</footer>
+</div>
+
+<div class="mobile-cart-bar" id="mobileCartBar" hidden>
+  <div class="mobile-cart-info">
+    <span class="mobile-cart-count" id="mobileCartCount"></span>
+    <span class="mobile-cart-credits" id="mobileCartCredits"></span>
+  </div>
+  <button class="btn" id="mobileCartBtn" type="button"></button>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var GROUPS = {
+    identity:   {th:"กลุ่มทักษะอัตลักษณ์พระจอมเกล้าลาดกระบัง",       en:"KMITL Identity Skills",              css:"g-identity",   token:"group1", short:"อัตลักษณ์"},
+    personal:   {th:"กลุ่มทักษะด้านบุคคลและทักษะส่งเสริมวิชาชีพ",     en:"Personal and Professional Skills",   css:"g-personal",   token:"group2", short:"บุคคล"},
+    management: {th:"กลุ่มทักษะด้านการจัดการและภาวะความเป็นผู้นำ",     en:"Management and Leadership Skills",   css:"g-management", token:"group3", short:"การจัดการ"},
+    language:   {th:"กลุ่มทักษะด้านภาษาและการสื่อสาร",                en:"Language and Communication Skills",  css:"g-language",   token:"group4", short:"ภาษา"}
+  };
+  var GROUP_ORDER = ["identity","personal","management","language"];
+
+  var EXAM_SELF = {self:true};
+
+  var REQUIRED_COURSES = [
+    {
+      code:"01006020", nameTh:"ฟิสิกส์ทั่วไป 1", nameEn:"General Physics 1", credit:"3(3-0-6)",
+      sections:[
+        {id:"20-1", num:"01", slots:[{day:"จ, พ", time:"09:00–12:00", room:"E301"}], instr:"อ.ดร.สมชาย ...", cap:60, taken:22, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"20-2", num:"02", slots:[{day:"อ, พฤ", time:"13:00–16:00", room:"E301"}], instr:"ผศ.ดร.กัลยา ...", cap:60, taken:55, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"20-3", num:"03", slots:[{day:"ศ", time:"09:00–12:00", room:"E205"}], instr:"อ.ดร.สมชาย ...", cap:50, taken:50, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01006021", nameTh:"ฟิสิกส์ทั่วไป 2", nameEn:"General Physics 2", credit:"3(3-0-6)",
+      sections:[
+        {id:"21-1", num:"01", slots:[{day:"จ, พ", time:"09:00–12:00", room:"E303"}], instr:"อ.ดร.สมชาย ...", cap:60, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"21-2", num:"02", slots:[{day:"อ, พฤ", time:"13:00–16:00", room:"E303"}], instr:"ผศ.ดร.กัลยา ...", cap:60, taken:15, examMid:EXAM_SELF, examFinal:{self:false, date:"ศุกร์ 30 ตุลาคม 2569", time:"09:00–12:00"}}
+      ]
+    },
+    {
+      code:"01006031", nameTh:"แคลคูลัส 2", nameEn:"Calculus 2", credit:"3(3-0-6)",
+      sections:[
+        {id:"31-1", num:"01", slots:[{day:"จ, พ, ศ", time:"09:00–12:00", room:"E102"}], instr:"รศ.ดร.วิภา ...", cap:70, taken:31, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"31-2", num:"02", slots:[{day:"อ, พฤ", time:"09:00–12:00", room:"E104"}], instr:"อ.ดร.ปิยะ ...", cap:70, taken:68, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076002", nameTh:"การเขียนโปรแกรมคอมพิวเตอร์เบื้องต้น", nameEn:"Programming Fundamental", credit:"3(2-2-5)",
+      sections:[
+        {id:"02-1", num:"01",
+          slots:[{day:"จ", time:"13:00–16:00", room:"E301", kind:"lecture"}, {day:"พ", time:"13:00–16:00", room:"Lab CE-1", kind:"lab"}],
+          instr:"อ.ดร.ธีรพงษ์ ...", cap:40, taken:12, examMid:EXAM_SELF, examFinal:{self:false, date:"ศุกร์ 30 ตุลาคม 2569", time:"13:30–16:30"}},
+        {id:"02-2", num:"02",
+          slots:[{day:"อ", time:"13:00–16:00", room:"E301", kind:"lecture"}, {day:"พฤ", time:"13:00–16:00", room:"Lab CE-2", kind:"lab"}],
+          instr:"ผศ.ดร.นภัสสร ...", cap:40, taken:40, examMid:EXAM_SELF, examFinal:{self:false, date:"ศุกร์ 30 ตุลาคม 2569", time:"13:30–16:30"}},
+        {id:"02-3", num:"03",
+          slots:[{day:"ศ", time:"09:00–12:00", room:"E301", kind:"lecture"}, {day:"ศ", time:"13:00–16:00", room:"Lab CE-1", kind:"lab"}],
+          instr:"อ.ดร.ธีรพงษ์ ...", cap:35, taken:19, examMid:EXAM_SELF, examFinal:{self:false, date:"ศุกร์ 30 ตุลาคม 2569", time:"13:30–16:30"}}
+      ]
+    },
+    {
+      code:"01005001", nameTh:"ปฏิบัติการฟิสิกส์ทั่วไป 1", nameEn:"General Physics Laboratory 1", credit:"1(0-3-1)",
+      sections:[
+        {id:"lab1-1", num:"01", slots:[{day:"พ", time:"13:00–16:00", room:"Lab-Phys1", kind:"lab"}], instr:"อ.ดร.สมชาย ...", cap:24, taken:24, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"lab1-2", num:"02", slots:[{day:"ศ", time:"13:00–16:00", room:"Lab-Phys2", kind:"lab"}], instr:"ผศ.ดร.กัลยา ...", cap:24, taken:10, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01005002", nameTh:"การเขียนแบบวิศวกรรม", nameEn:"Engineering Drawing", credit:"3(2-2-5)",
+      sections:[
+        {id:"draw-1", num:"01", slots:[{day:"อ, พฤ", time:"13:00–16:00", room:"Draft-1", kind:"lab"}], instr:"อ.ดร.ธีรพงษ์ ...", cap:40, taken:37, examMid:EXAM_SELF, examFinal:{self:false, date:"พุธ 29 ตุลาคม 2569", time:"13:00–16:00"}},
+        {id:"draw-2", num:"02", slots:[{day:"ศ", time:"09:00–12:00", room:"Draft-2", kind:"lab"}], instr:"อ.ดร.ธีรพงษ์ ...", cap:35, taken:12, examMid:EXAM_SELF, examFinal:{self:false, date:"พุธ 29 ตุลาคม 2569", time:"13:00–16:00"}}
+      ]
+    },
+    {
+      code:"01006018", nameTh:"เคมีทั่วไป", nameEn:"General Chemistry", credit:"3(3-0-6)",
+      sections:[
+        {id:"18-1", num:"01", slots:[{day:"จ, พ", time:"09:00–12:00", room:"E210"}], instr:"อ.ดร.ศิริพร ...", cap:65, taken:60, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"18-2", num:"02", slots:[{day:"อ, พฤ", time:"09:00–12:00", room:"E210"}], instr:"อ.ดร.ศิริพร ...", cap:65, taken:33, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01006033", nameTh:"ฟิสิกส์ทั่วไป 3", nameEn:"General Physics 3", credit:"3(3-0-6)",
+      sections:[
+        {id:"33-1", num:"01", slots:[{day:"จ", time:"09:00–12:00", room:"E304"}], instr:"อ.ดร.สมชาย ...", cap:55, taken:20, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"33-2", num:"02", slots:[{day:"พฤ", time:"13:00–16:00", room:"E304"}], instr:"ผศ.ดร.กัลยา ...", cap:55, taken:48, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01005004", nameTh:"ปฏิบัติการฟิสิกส์ทั่วไป 2", nameEn:"General Physics Laboratory 2", credit:"1(0-3-1)",
+      sections:[
+        {id:"lab2-1", num:"01", slots:[{day:"ศ", time:"13:00–16:00", room:"Lab-Phys3", kind:"lab"}], instr:"อ.ดร.สมชาย ...", cap:24, taken:5, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"lab2-2", num:"02", slots:[{day:"ส", time:"09:00–12:00", room:"Lab-Phys4", kind:"lab"}], instr:"ผศ.ดร.กัลยา ...", cap:24, taken:8, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076004", nameTh:"โครงสร้างข้อมูลและอัลกอริทึม", nameEn:"Data Structures and Algorithms", credit:"3(2-2-5)",
+      sections:[
+        {id:"ds-1", num:"01", slots:[{day:"อ", time:"09:00–12:00", room:"E302", kind:"lecture"}, {day:"พฤ", time:"13:00–16:00", room:"Lab CE-3", kind:"lab"}], instr:"อ.ดร.ธีรพงษ์ ...", cap:40, taken:15, examMid:EXAM_SELF, examFinal:{self:false, date:"ศุกร์ 30 ตุลาคม 2569", time:"13:30–16:30"}},
+        {id:"ds-2", num:"02", slots:[{day:"ศ", time:"13:00–16:00", room:"E302", kind:"lecture"}, {day:"ส", time:"09:00–12:00", room:"Lab CE-4", kind:"lab"}], instr:"ผศ.ดร.นภัสสร ...", cap:35, taken:30, examMid:EXAM_SELF, examFinal:{self:false, date:"ศุกร์ 30 ตุลาคม 2569", time:"13:30–16:30"}}
+      ]
+    }
+,
+    {
+      code:"01006032", nameTh:"แคลคูลัส 1", nameEn:"Calculus 1", credit:"3(3-0-6)",
+      sections:[
+        {id:"c32-1", num:"01", slots:[{day:"จ", time:"09:00–12:00", room:"E300"}], instr:"อ.ดร.วรรณา ...", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"c32-2", num:"02", slots:[{day:"อ", time:"13:00–16:00", room:"E301"}], instr:"ผศ.ดร.สุรชัย ...", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01006041", nameTh:"สมการเชิงอนุพันธ์", nameEn:"Differential Equations", credit:"3(3-0-6)",
+      sections:[
+        {id:"de-1", num:"01", slots:[{day:"พ", time:"17:00–20:00", room:"E302"}], instr:"อ.ดร.ปกรณ์ ...", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"de-2", num:"02", slots:[{day:"พฤ", time:"09:00–12:00", room:"E303"}], instr:"รศ.ดร.มณี ...", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01005005", nameTh:"ปฏิบัติการเคมีทั่วไป", nameEn:"General Chemistry Laboratory", credit:"1(0-3-1)",
+      sections:[
+        {id:"chlab-1", num:"01", slots:[{day:"ศ", time:"13:00–16:00", room:"Lab-E304", kind:"lab"}], instr:"อ.ดร.ชัยวัฒน์ ...", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"chlab-2", num:"02", slots:[{day:"ส", time:"17:00–20:00", room:"Lab-E305", kind:"lab"}], instr:"ผศ.ดร.อรุณี ...", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076005", nameTh:"วงจรไฟฟ้า", nameEn:"Electric Circuits", credit:"3(2-2-5)",
+      sections:[
+        {id:"circ-1", num:"01", slots:[{day:"จ", time:"09:00–12:00", room:"E306", kind:"lecture"}, {day:"อ", time:"13:00–16:00", room:"Lab-E306", kind:"lab"}], instr:"อ.ดร.ธนกร ...", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"circ-2", num:"02", slots:[{day:"พ", time:"17:00–20:00", room:"E307", kind:"lecture"}, {day:"พฤ", time:"09:00–12:00", room:"Lab-E307", kind:"lab"}], instr:"อ.ดร.พิมพ์ใจ ...", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076006", nameTh:"กลศาสตร์วิศวกรรม", nameEn:"Engineering Mechanics", credit:"3(3-0-6)",
+      sections:[
+        {id:"mech-1", num:"01", slots:[{day:"ศ", time:"13:00–16:00", room:"E308"}], instr:"อ.ดร.กิตติ ...", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"mech-2", num:"02", slots:[{day:"ส", time:"17:00–20:00", room:"E309"}], instr:"ผศ.ดร.นารี ...", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076007", nameTh:"วัสดุวิศวกรรม", nameEn:"Engineering Materials", credit:"3(3-0-6)",
+      sections:[
+        {id:"mat-1", num:"01", slots:[{day:"จ", time:"09:00–12:00", room:"E310"}], instr:"อ.ดร.สมพงษ์ ...", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"mat-2", num:"02", slots:[{day:"อ", time:"13:00–16:00", room:"E311"}], instr:"อ.ดร.รุ่งนภา ...", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076008", nameTh:"การเขียนโปรแกรมเชิงวัตถุ", nameEn:"Object-Oriented Programming", credit:"3(2-2-5)",
+      sections:[
+        {id:"oop-1", num:"01", slots:[{day:"พ", time:"17:00–20:00", room:"E312", kind:"lecture"}, {day:"พฤ", time:"09:00–12:00", room:"Lab-E312", kind:"lab"}], instr:"อ.Michael Chen", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"oop-2", num:"02", slots:[{day:"ศ", time:"13:00–16:00", room:"E313", kind:"lecture"}, {day:"ส", time:"17:00–20:00", room:"Lab-E313", kind:"lab"}], instr:"อ.Laura Garcia", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076009", nameTh:"ระบบฐานข้อมูล", nameEn:"Database Systems", credit:"3(2-2-5)",
+      sections:[
+        {id:"db-1", num:"01", slots:[{day:"จ", time:"09:00–12:00", room:"E314", kind:"lecture"}, {day:"อ", time:"13:00–16:00", room:"Lab-E314", kind:"lab"}], instr:"อ.David Kim", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"db-2", num:"02", slots:[{day:"พ", time:"17:00–20:00", room:"E315", kind:"lecture"}, {day:"พฤ", time:"09:00–12:00", room:"Lab-E315", kind:"lab"}], instr:"อ.Sophie Martin", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076010", nameTh:"การสื่อสารข้อมูลและเครือข่าย", nameEn:"Data Communication and Networks", credit:"3(3-0-6)",
+      sections:[
+        {id:"net-1", num:"01", slots:[{day:"ศ", time:"13:00–16:00", room:"E316"}], instr:"อ.ดร.วรรณา ...", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"net-2", num:"02", slots:[{day:"ส", time:"17:00–20:00", room:"E317"}], instr:"ผศ.ดร.สุรชัย ...", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076011", nameTh:"ปฏิบัติการวิศวกรรมไฟฟ้า", nameEn:"Electrical Engineering Laboratory", credit:"1(0-3-1)",
+      sections:[
+        {id:"eelab-1", num:"01", slots:[{day:"จ", time:"09:00–12:00", room:"Lab-E318", kind:"lab"}], instr:"อ.ดร.ปกรณ์ ...", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"eelab-2", num:"02", slots:[{day:"อ", time:"13:00–16:00", room:"Lab-E319", kind:"lab"}], instr:"รศ.ดร.มณี ...", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01006042", nameTh:"พีชคณิตเชิงเส้น", nameEn:"Linear Algebra", credit:"3(3-0-6)",
+      sections:[
+        {id:"lina-1", num:"01", slots:[{day:"พ", time:"17:00–20:00", room:"E320"}], instr:"อ.ดร.ชัยวัฒน์ ...", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"lina-2", num:"02", slots:[{day:"พฤ", time:"09:00–12:00", room:"E321"}], instr:"ผศ.ดร.อรุณี ...", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01006043", nameTh:"ความน่าจะเป็นและสถิติ", nameEn:"Probability and Statistics", credit:"3(3-0-6)",
+      sections:[
+        {id:"prob-1", num:"01", slots:[{day:"ศ", time:"13:00–16:00", room:"E322"}], instr:"อ.ดร.ธนกร ...", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"prob-2", num:"02", slots:[{day:"ส", time:"17:00–20:00", room:"E323"}], instr:"อ.ดร.พิมพ์ใจ ...", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076012", nameTh:"ระบบปฏิบัติการ", nameEn:"Operating Systems", credit:"3(3-0-6)",
+      sections:[
+        {id:"os-1", num:"01", slots:[{day:"จ", time:"09:00–12:00", room:"E324"}], instr:"อ.ดร.กิตติ ...", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"os-2", num:"02", slots:[{day:"อ", time:"13:00–16:00", room:"E325"}], instr:"ผศ.ดร.นารี ...", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076013", nameTh:"สถาปัตยกรรมคอมพิวเตอร์", nameEn:"Computer Architecture", credit:"3(3-0-6)",
+      sections:[
+        {id:"arch-1", num:"01", slots:[{day:"พ", time:"17:00–20:00", room:"E326"}], instr:"อ.ดร.สมพงษ์ ...", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"arch-2", num:"02", slots:[{day:"พฤ", time:"09:00–12:00", room:"E327"}], instr:"อ.ดร.รุ่งนภา ...", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076014", nameTh:"วิศวกรรมซอฟต์แวร์", nameEn:"Software Engineering", credit:"3(2-2-5)",
+      sections:[
+        {id:"se-1", num:"01", slots:[{day:"ศ", time:"13:00–16:00", room:"E328", kind:"lecture"}, {day:"ส", time:"17:00–20:00", room:"Lab-E328", kind:"lab"}], instr:"อ.Michael Chen", cap:45, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"se-2", num:"02", slots:[{day:"จ", time:"09:00–12:00", room:"E329", kind:"lecture"}, {day:"อ", time:"13:00–16:00", room:"Lab-E329", kind:"lab"}], instr:"อ.Laura Garcia", cap:50, taken:25, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    }
+    ,
+    {
+      code:"01006034", nameTh:"ฟิสิกส์สมัยใหม่", nameEn:"Modern Physics", credit:"3(3-0-6)",
+      sections:[
+        {id:"mp-1", num:"01", slots:[{day:"จ", time:"13:00–16:00", room:"E330"}], instr:"ผศ.ดร.กัลยา ...", cap:55, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"mp-2", num:"02", slots:[{day:"อ", time:"09:00–12:00", room:"E331"}], instr:"อ.ดร.สมชาย ...", cap:55, taken:47, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076015", nameTh:"ความรู้เบื้องต้นเกี่ยวกับอินเทอร์เน็ตของสรรพสิ่ง", nameEn:"Introduction to Internet of Things", credit:"3(2-2-5)",
+      sections:[
+        {id:"iot-1", num:"01", slots:[{day:"จ", time:"13:00–16:00", room:"E332", kind:"lecture"}, {day:"ศ", time:"09:00–12:00", room:"Lab IoT-1", kind:"lab"}], instr:"อ.ดร.ธีรพงษ์ ...", cap:40, taken:18, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"iot-2", num:"02", slots:[{day:"อ", time:"09:00–12:00", room:"E332", kind:"lecture"}, {day:"พฤ", time:"13:00–16:00", room:"Lab IoT-2", kind:"lab"}], instr:"ผศ.ดร.นภัสสร ...", cap:40, taken:36, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01076016", nameTh:"อิเล็กทรอนิกส์เบื้องต้น", nameEn:"Basic Electronics", credit:"3(3-0-6)",
+      sections:[
+        {id:"elec-1", num:"01", slots:[{day:"อ", time:"09:00–12:00", room:"E333"}], instr:"อ.ดร.ธนกร ...", cap:50, taken:22, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"elec-2", num:"02", slots:[{day:"พฤ", time:"13:00–16:00", room:"E334"}], instr:"อ.ดร.พิมพ์ใจ ...", cap:50, taken:50, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01005007", nameTh:"ปฏิบัติการอิเล็กทรอนิกส์เบื้องต้น", nameEn:"Basic Electronics Laboratory", credit:"1(0-3-1)",
+      sections:[
+        {id:"elab-1", num:"01", slots:[{day:"จ", time:"13:00–16:00", room:"Lab-E335", kind:"lab"}], instr:"อ.ดร.ปกรณ์ ...", cap:30, taken:14, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"elab-2", num:"02", slots:[{day:"ส", time:"09:00–12:00", room:"Lab-E336", kind:"lab"}], instr:"รศ.ดร.มณี ...", cap:30, taken:9, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01006044", nameTh:"เทคนิคการคำนวณเชิงตัวเลข", nameEn:"Numerical Methods", credit:"3(3-0-6)",
+      sections:[
+        {id:"nm-1", num:"01", slots:[{day:"จ", time:"09:00–12:00", room:"E337"}], instr:"อ.ดร.ปิยะ ...", cap:50, taken:28, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"nm-2", num:"02", slots:[{day:"พ", time:"13:00–16:00", room:"E338"}], instr:"รศ.ดร.วิภา ...", cap:50, taken:41, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    }
+  ];
+
+  var GENED_COURSES = [
+    {
+      code:"90010101", nameTh:"ลาดกระบังศึกษา", nameEn:"KMITL Studies", credit:"2(2-0-4)", group:"identity",
+      sections:[
+        {id:"g1-1", num:"01", slots:[{day:"จ", time:"13:00–16:00", room:"A201"}], instr:"อ.ดร.บุญรอด ...", cap:80, taken:36, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g1-2", num:"02", slots:[{day:"พฤ", time:"09:00–12:00", room:"A202"}], instr:"อ.สุนีย์ ...", cap:80, taken:79, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90010102", nameTh:"จิตอาสาและความเป็นพลเมือง", nameEn:"Volunteer Spirit and Citizenship", credit:"2(2-0-4)", group:"identity",
+      sections:[
+        {id:"g2-1", num:"01", slots:[{day:"อ", time:"13:00–16:00", room:"A203"}], instr:"อ.ดร.มานะ ...", cap:60, taken:14, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90010103", nameTh:"ศาสตร์พระราชาเพื่อการพัฒนาที่ยั่งยืน", nameEn:"King's Philosophy for Sustainable Development", credit:"2(2-0-4)", group:"identity",
+      sections:[
+        {id:"g9-1", num:"01", slots:[{day:"จ", time:"17:00–20:00", room:"A210"}], instr:"อ.ดร.พงศกร ...", cap:50, taken:18, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g9-2", num:"02", slots:[{day:"พฤ", time:"17:00–20:00", room:"A211"}], instr:"อ.ดร.พงศกร ...", cap:50, taken:50, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g9-3", num:"03", hyflex:true, slots:[{day:"ส", time:"09:00–12:00", room:"Online + A501"}], instr:"อ.ดร.พงศกร ...", cap:60, taken:24, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90010104", nameTh:"การพัฒนาทักษะชีวิตเพื่อสุขภาวะ", nameEn:"Life Skills for Wellbeing", credit:"1(1-0-2)", group:"identity",
+      sections:[
+        {id:"g10-1", num:"01", slots:[{day:"อ", time:"13:00–16:00", room:"A212"}], instr:"อ.สุนีย์ ...", cap:70, taken:66, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g10-2", num:"02", slots:[{day:"ศ", time:"09:00–12:00", room:"A212"}], instr:"อ.สุนีย์ ...", cap:70, taken:21, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90020201", nameTh:"การพัฒนาบุคลิกภาพและการเข้าสังคม", nameEn:"Personality Development and Social Skills", credit:"2(2-0-4)", group:"personal",
+      sections:[
+        {id:"g3-1", num:"01", slots:[{day:"พ", time:"13:00–16:00", room:"A305"}], instr:"อ.ปาริชาติ ...", cap:50, taken:44, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g3-2", num:"02", slots:[{day:"ศ", time:"09:00–12:00", room:"A305"}], instr:"อ.ปาริชาติ ...", cap:50, taken:20, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90020202", nameTh:"ทักษะการเป็นผู้ประกอบการ", nameEn:"Entrepreneurial Skills", credit:"3(3-0-6)", group:"personal",
+      sections:[
+        {id:"g4-1", num:"01", slots:[{day:"จ, พ", time:"13:00–16:00", room:"A310"}], instr:"ผศ.ดร.เอกชัย ...", cap:45, taken:45, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90020203", nameTh:"การคิดเชิงออกแบบเพื่อสร้างสรรค์นวัตกรรม", nameEn:"Design Thinking for Innovation", credit:"3(3-0-6)", group:"personal",
+      sections:[
+        {id:"g11-1", num:"01", slots:[{day:"พฤ", time:"09:00–12:00", room:"A320"}], instr:"อ.ดร.ทิพวรรณ ...", cap:45, taken:39, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g11-2", num:"02", slots:[{day:"จ", time:"17:00–20:00", room:"A321"}], instr:"อ.ดร.ทิพวรรณ ...", cap:45, taken:9, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g11-3", num:"03", hyflex:true, slots:[{day:"ส", time:"13:00–16:00", room:"Online + A502"}], instr:"อ.ดร.ทิพวรรณ ...", cap:60, taken:33, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90020204", nameTh:"จิตวิทยาเพื่อการทำงานร่วมกัน", nameEn:"Psychology for Collaborative Work", credit:"2(2-0-4)", group:"personal",
+      sections:[
+        {id:"g12-1", num:"01", slots:[{day:"พ", time:"13:00–16:00", room:"A322"}], instr:"อ.ปาริชาติ ...", cap:50, taken:12, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g12-2", num:"02", slots:[{day:"อ", time:"17:00–20:00", room:"A323"}], instr:"อ.ปาริชาติ ...", cap:50, taken:44, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90030301", nameTh:"ภาวะผู้นำและการทำงานเป็นทีม", nameEn:"Leadership and Teamwork", credit:"2(2-0-4)", group:"management",
+      sections:[
+        {id:"g5-1", num:"01", slots:[{day:"อ", time:"09:00–12:00", room:"A401"}], instr:"อ.ดร.รัชนี ...", cap:55, taken:29, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g5-2", num:"02", slots:[{day:"พฤ", time:"13:00–16:00", room:"A401"}], instr:"อ.ดร.รัชนี ...", cap:55, taken:51, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90030302", nameTh:"การจัดการการเงินส่วนบุคคล", nameEn:"Personal Financial Management", credit:"2(2-0-4)", group:"management",
+      sections:[
+        {id:"g6-1", num:"01", slots:[{day:"ศ", time:"13:00–16:00", room:"A402"}], instr:"อ.ดร.ชนากานต์ ...", cap:60, taken:12, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90030303", nameTh:"การบริหารโครงการเบื้องต้น", nameEn:"Introduction to Project Management", credit:"2(2-0-4)", group:"management",
+      sections:[
+        {id:"g13-1", num:"01", slots:[{day:"อ", time:"09:00–12:00", room:"A410"}], instr:"อ.ดร.รัชนี ...", cap:55, taken:48, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g13-2", num:"02", slots:[{day:"ศ", time:"17:00–20:00", room:"A411"}], instr:"อ.ดร.รัชนี ...", cap:55, taken:6, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90030304", nameTh:"การคิดเชิงวิพากษ์และการแก้ปัญหา", nameEn:"Critical Thinking and Problem Solving", credit:"3(3-0-6)", group:"management",
+      sections:[
+        {id:"g14-1", num:"01", slots:[{day:"จ, พ", time:"13:00–16:00", room:"A412"}], instr:"ผศ.ดร.เอกชัย ...", cap:45, taken:32, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g14-2", num:"02", slots:[{day:"พฤ", time:"17:00–20:00", room:"A413"}], instr:"ผศ.ดร.เอกชัย ...", cap:45, taken:15, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g14-3", num:"03", hyflex:true, slots:[{day:"ส", time:"09:00–12:00", room:"Online + A503"}], instr:"ผศ.ดร.เอกชัย ...", cap:60, taken:19, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"01006014", nameTh:"ภาษาอังกฤษเชิงวิชาการ", nameEn:"Academic English", credit:"3(3-0-6)", group:"language",
+      sections:[
+        {id:"14-1", num:"01", slots:[{day:"จ, พ", time:"09:00–12:00", room:"A404"}], instr:"อ.Kevin Marsh", cap:35, taken:35, examMid:{self:false, date:"อังคาร 14 ตุลาคม 2569", time:"09:00–11:00"}, examFinal:EXAM_SELF},
+        {id:"14-2", num:"02", slots:[{day:"อ, พฤ", time:"09:00–12:00", room:"A405"}], instr:"อ.Anna Wu", cap:35, taken:9, examMid:{self:false, date:"อังคาร 14 ตุลาคม 2569", time:"09:00–11:00"}, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040401", nameTh:"ภาษาจีนเพื่อการสื่อสาร", nameEn:"Chinese for Communication", credit:"3(3-0-6)", group:"language",
+      sections:[
+        {id:"g7-1", num:"01", slots:[{day:"อ, พฤ", time:"09:00–12:00", room:"A406"}], instr:"อ.Li Wei", cap:40, taken:18, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040402", nameTh:"ศิลปะการพูดในที่สาธารณะ", nameEn:"Public Speaking", credit:"2(2-0-4)", group:"language",
+      sections:[
+        {id:"g8-1", num:"01", slots:[{day:"พ", time:"09:00–12:00", room:"A407"}], instr:"อ.ดร.นันทวัน ...", cap:40, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g8-2", num:"02", slots:[{day:"ศ", time:"09:00–12:00", room:"A407"}], instr:"อ.ดร.นันทวัน ...", cap:40, taken:31, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040403", nameTh:"ภาษาญี่ปุ่นเพื่อการสื่อสาร", nameEn:"Japanese for Communication", credit:"3(3-0-6)", group:"language",
+      sections:[
+        {id:"g15-1", num:"01", slots:[{day:"จ, พ", time:"09:00–12:00", room:"A414"}], instr:"อ.Yuki Tanaka", cap:35, taken:30, examMid:{self:false, date:"อังคาร 14 ตุลาคม 2569", time:"13:00–15:00"}, examFinal:EXAM_SELF},
+        {id:"g15-2", num:"02", slots:[{day:"ศ", time:"17:00–20:00", room:"A415"}], instr:"อ.Yuki Tanaka", cap:35, taken:11, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040404", nameTh:"การเขียนสร้างสรรค์และการเล่าเรื่อง", nameEn:"Creative Writing and Storytelling", credit:"2(2-0-4)", group:"language",
+      sections:[
+        {id:"g16-1", num:"01", slots:[{day:"อ, พฤ", time:"09:00–12:00", room:"A416"}], instr:"อ.ดร.นันทวัน ...", cap:40, taken:37, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g16-2", num:"02", slots:[{day:"พ", time:"17:00–20:00", room:"A417"}], instr:"อ.ดร.นันทวัน ...", cap:40, taken:8, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040405", nameTh:"ภาษาเกาหลีเพื่อการสื่อสาร", nameEn:"Korean for Communication", credit:"3(3-0-6)", group:"language",
+      sections:[
+        {id:"g17-1", num:"01", hyflex:true, slots:[{day:"ส", time:"13:00–16:00", room:"Online + A418"}], instr:"อ.Park Jieun", cap:45, taken:16, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90010105", nameTh:"ประวัติศาสตร์และวัฒนธรรมไทย", nameEn:"Thai History and Culture", credit:"2(2-0-4)", group:"identity",
+      sections:[
+        {id:"g18-1", num:"01", slots:[{day:"พ", time:"09:00–12:00", room:"A213"}], instr:"อ.ดร.บุญรอด ...", cap:70, taken:22, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g18-2", num:"02", slots:[{day:"ศ", time:"17:00–20:00", room:"A213"}], instr:"อ.สุนีย์ ...", cap:70, taken:60, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90020205", nameTh:"การจัดการความเครียดและสุขภาพจิต", nameEn:"Stress Management and Mental Health", credit:"2(2-0-4)", group:"personal",
+      sections:[
+        {id:"g19-1", num:"01", slots:[{day:"จ", time:"13:00–16:00", room:"A324"}], instr:"อ.ปาริชาติ ...", cap:55, taken:10, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g19-2", num:"02", slots:[{day:"พฤ", time:"17:00–20:00", room:"A324"}], instr:"อ.ดร.ทิพวรรณ ...", cap:55, taken:40, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90020206", nameTh:"ศิลปะการใช้ชีวิต", nameEn:"Art of Living", credit:"1(1-0-2)", group:"personal",
+      sections:[
+        {id:"g20-1", num:"01", slots:[{day:"ส", time:"13:00–16:00", room:"A325"}], instr:"อ.ปาริชาติ ...", cap:60, taken:18, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90030305", nameTh:"การเป็นผู้นำการเปลี่ยนแปลง", nameEn:"Change Leadership", credit:"2(2-0-4)", group:"management",
+      sections:[
+        {id:"g21-1", num:"01", slots:[{day:"อ", time:"13:00–16:00", room:"A414"}], instr:"อ.ดร.รัชนี ...", cap:55, taken:33, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g21-2", num:"02", slots:[{day:"ศ", time:"09:00–12:00", room:"A414"}], instr:"ผศ.ดร.เอกชัย ...", cap:55, taken:9, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90030306", nameTh:"การจัดการเวลาและความสำเร็จ", nameEn:"Time Management and Achievement", credit:"1(1-0-2)", group:"management",
+      sections:[
+        {id:"g22-1", num:"01", slots:[{day:"พ", time:"17:00–20:00", room:"A415"}], instr:"อ.ดร.ชนากานต์ ...", cap:60, taken:14, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040406", nameTh:"ภาษาฝรั่งเศสเพื่อการสื่อสาร", nameEn:"French for Communication", credit:"3(3-0-6)", group:"language",
+      sections:[
+        {id:"g23-1", num:"01", slots:[{day:"จ", time:"09:00–12:00", room:"A419"}], instr:"อ.Marie Dubois", cap:35, taken:12, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g23-2", num:"02", slots:[{day:"พฤ", time:"13:00–16:00", room:"A419"}], instr:"อ.Marie Dubois", cap:35, taken:31, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040407", nameTh:"การอ่านและเขียนภาษาอังกฤษเชิงวิชาการ", nameEn:"Academic Reading and Writing", credit:"2(2-0-4)", group:"language",
+      sections:[
+        {id:"g24-1", num:"01", slots:[{day:"อ", time:"17:00–20:00", room:"A420"}], instr:"อ.Anna Wu", cap:35, taken:20, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"g24-2", num:"02", slots:[{day:"ส", time:"13:00–16:00", room:"A420"}], instr:"อ.Kevin Marsh", cap:35, taken:5, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    }
+,
+    {
+      code:"90010106", nameTh:"ธรรมาภิบาลและจริยธรรม", nameEn:"Governance and Ethics", credit:"2(2-0-4)", group:"identity",
+      sections:[
+        {id:"ng106-1", num:"01", slots:[{day:"พฤ", time:"13:00–16:00", room:"A22-601"}], instr:"ผศ.ดร.อรุณี ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng106-2", num:"02", slots:[{day:"ศ", time:"17:00–20:00", room:"A22-602"}], instr:"อ.ดร.ธนกร ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90010107", nameTh:"พลเมืองโลกและความหลากหลายทางวัฒนธรรม", nameEn:"Global Citizenship and Cultural Diversity", credit:"2(2-0-4)", group:"identity",
+      sections:[
+        {id:"ng107-1", num:"01", slots:[{day:"ส", time:"09:00–12:00", room:"A22-603"}], instr:"อ.ดร.พิมพ์ใจ ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng107-2", num:"02", slots:[{day:"จ", time:"13:00–16:00", room:"A22-604"}], instr:"อ.ดร.กิตติ ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90010108", nameTh:"นวัตกรรมเพื่อสังคม", nameEn:"Innovation for Society", credit:"2(2-0-4)", group:"identity",
+      sections:[
+        {id:"ng108-1", num:"01", slots:[{day:"อ", time:"17:00–20:00", room:"A22-605"}], instr:"ผศ.ดร.นารี ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng108-2", num:"02", slots:[{day:"พ", time:"09:00–12:00", room:"A22-606"}], instr:"อ.ดร.สมพงษ์ ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90010109", nameTh:"สจล.กับการพัฒนาที่ยั่งยืน", nameEn:"KMITL and Sustainable Development", credit:"2(2-0-4)", group:"identity",
+      sections:[
+        {id:"ng109-1", num:"01", slots:[{day:"พฤ", time:"13:00–16:00", room:"A22-607"}], instr:"อ.ดร.รุ่งนภา ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng109-2", num:"02", slots:[{day:"ศ", time:"17:00–20:00", room:"A22-608"}], instr:"อ.Michael Chen", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90010110", nameTh:"ศิลปะและความคิดสร้างสรรค์", nameEn:"Art and Creativity", credit:"2(2-0-4)", group:"identity",
+      sections:[
+        {id:"ng110-1", num:"01", slots:[{day:"ส", time:"09:00–12:00", room:"A22-609"}], instr:"อ.Laura Garcia", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng110-2", num:"02", slots:[{day:"จ", time:"13:00–16:00", room:"A22-610"}], instr:"อ.David Kim", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90020207", nameTh:"การพัฒนาบุคลิกภาพเพื่อความสำเร็จ", nameEn:"Personality Development for Success", credit:"2(2-0-4)", group:"personal",
+      sections:[
+        {id:"ng207-1", num:"01", slots:[{day:"อ", time:"17:00–20:00", room:"A33-611"}], instr:"อ.Sophie Martin", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng207-2", num:"02", slots:[{day:"พ", time:"09:00–12:00", room:"A33-612"}], instr:"อ.ดร.วรรณา ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90020208", nameTh:"สุขภาวะทางกายและใจ", nameEn:"Physical and Mental Wellness", credit:"1(1-0-2)", group:"personal",
+      sections:[
+        {id:"ng208-1", num:"01", slots:[{day:"พฤ", time:"13:00–16:00", room:"A33-613"}], instr:"ผศ.ดร.สุรชัย ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90020209", nameTh:"โยคะและการฝึกสมาธิ", nameEn:"Yoga and Meditation", credit:"1(1-0-2)", group:"personal",
+      sections:[
+        {id:"ng209-1", num:"01", slots:[{day:"ศ", time:"17:00–20:00", room:"A33-614"}], instr:"อ.ดร.ปกรณ์ ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90020210", nameTh:"การออกกำลังกายเพื่อสุขภาพ", nameEn:"Exercise for Health", credit:"1(1-0-2)", group:"personal",
+      sections:[
+        {id:"ng210-1", num:"01", slots:[{day:"ส", time:"09:00–12:00", room:"A33-615"}], instr:"รศ.ดร.มณี ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90020211", nameTh:"ทักษะการสื่อสารระหว่างบุคคล", nameEn:"Interpersonal Communication Skills", credit:"2(2-0-4)", group:"personal",
+      sections:[
+        {id:"ng211-1", num:"01", slots:[{day:"จ", time:"13:00–16:00", room:"A33-616"}], instr:"อ.ดร.ชัยวัฒน์ ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng211-2", num:"02", slots:[{day:"อ", time:"17:00–20:00", room:"A33-617"}], instr:"ผศ.ดร.อรุณี ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90020212", nameTh:"การรู้เท่าทันสื่อและสารสนเทศ", nameEn:"Media and Information Literacy", credit:"2(2-0-4)", group:"personal",
+      sections:[
+        {id:"ng212-1", num:"01", slots:[{day:"พ", time:"09:00–12:00", room:"A33-618"}], instr:"อ.ดร.ธนกร ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng212-2", num:"02", slots:[{day:"พฤ", time:"13:00–16:00", room:"A33-619"}], instr:"อ.ดร.พิมพ์ใจ ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90030307", nameTh:"การเป็นผู้ประกอบการดิจิทัล", nameEn:"Digital Entrepreneurship", credit:"2(2-0-4)", group:"management",
+      sections:[
+        {id:"ng307-1", num:"01", slots:[{day:"ศ", time:"17:00–20:00", room:"A44-620"}], instr:"อ.ดร.กิตติ ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng307-2", num:"02", slots:[{day:"ส", time:"09:00–12:00", room:"A44-621"}], instr:"ผศ.ดร.นารี ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90030308", nameTh:"การจัดการทรัพยากรมนุษย์เบื้องต้น", nameEn:"Introduction to Human Resource Management", credit:"2(2-0-4)", group:"management",
+      sections:[
+        {id:"ng308-1", num:"01", slots:[{day:"จ", time:"13:00–16:00", room:"A44-622"}], instr:"อ.ดร.สมพงษ์ ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng308-2", num:"02", slots:[{day:"อ", time:"17:00–20:00", room:"A44-623"}], instr:"อ.ดร.รุ่งนภา ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90030309", nameTh:"การตลาดเบื้องต้น", nameEn:"Introduction to Marketing", credit:"3(3-0-6)", group:"management",
+      sections:[
+        {id:"ng309-1", num:"01", slots:[{day:"พ", time:"09:00–12:00", room:"A44-624"}], instr:"อ.Michael Chen", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng309-2", num:"02", slots:[{day:"พฤ", time:"13:00–16:00", room:"A44-625"}], instr:"อ.Laura Garcia", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90030310", nameTh:"การจัดการนวัตกรรม", nameEn:"Innovation Management", credit:"2(2-0-4)", group:"management",
+      sections:[
+        {id:"ng310-1", num:"01", slots:[{day:"ศ", time:"17:00–20:00", room:"A44-626"}], instr:"อ.David Kim", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng310-2", num:"02", slots:[{day:"ส", time:"09:00–12:00", room:"A44-627"}], instr:"อ.Sophie Martin", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90030311", nameTh:"การเงินส่วนบุคคลและการลงทุน", nameEn:"Personal Finance and Investment", credit:"2(2-0-4)", group:"management",
+      sections:[
+        {id:"ng311-1", num:"01", slots:[{day:"จ", time:"13:00–16:00", room:"A44-628"}], instr:"อ.ดร.วรรณา ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng311-2", num:"02", slots:[{day:"อ", time:"17:00–20:00", room:"A44-629"}], instr:"ผศ.ดร.สุรชัย ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90030312", nameTh:"การคิดเชิงระบบ", nameEn:"Systems Thinking", credit:"2(2-0-4)", group:"management",
+      sections:[
+        {id:"ng312-1", num:"01", slots:[{day:"พ", time:"09:00–12:00", room:"A44-630"}], instr:"อ.ดร.ปกรณ์ ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng312-2", num:"02", slots:[{day:"พฤ", time:"13:00–16:00", room:"A44-631"}], instr:"รศ.ดร.มณี ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040408", nameTh:"ภาษาสเปนเพื่อการสื่อสาร", nameEn:"Spanish for Communication", credit:"3(3-0-6)", group:"language",
+      sections:[
+        {id:"ng408-1", num:"01", slots:[{day:"ศ", time:"17:00–20:00", room:"A55-632"}], instr:"อ.ดร.ชัยวัฒน์ ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng408-2", num:"02", slots:[{day:"ส", time:"09:00–12:00", room:"A55-633"}], instr:"ผศ.ดร.อรุณี ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040409", nameTh:"ภาษาเวียดนามเพื่อการสื่อสาร", nameEn:"Vietnamese for Communication", credit:"3(3-0-6)", group:"language",
+      sections:[
+        {id:"ng409-1", num:"01", slots:[{day:"จ", time:"13:00–16:00", room:"A55-634"}], instr:"อ.ดร.ธนกร ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng409-2", num:"02", slots:[{day:"อ", time:"17:00–20:00", room:"A55-635"}], instr:"อ.ดร.พิมพ์ใจ ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040410", nameTh:"ภาษาอังกฤษเพื่อการนำเสนอ", nameEn:"English for Presentation", credit:"2(2-0-4)", group:"language",
+      sections:[
+        {id:"ng410-1", num:"01", slots:[{day:"พ", time:"09:00–12:00", room:"A55-636"}], instr:"อ.ดร.กิตติ ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng410-2", num:"02", slots:[{day:"พฤ", time:"13:00–16:00", room:"A55-637"}], instr:"ผศ.ดร.นารี ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040411", nameTh:"ภาษาอังกฤษธุรกิจ", nameEn:"Business English", credit:"3(3-0-6)", group:"language",
+      sections:[
+        {id:"ng411-1", num:"01", slots:[{day:"ศ", time:"17:00–20:00", room:"A55-638"}], instr:"อ.ดร.สมพงษ์ ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng411-2", num:"02", slots:[{day:"ส", time:"09:00–12:00", room:"A55-639"}], instr:"อ.ดร.รุ่งนภา ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040412", nameTh:"การแปลภาษาอังกฤษ-ไทย", nameEn:"English-Thai Translation", credit:"2(2-0-4)", group:"language",
+      sections:[
+        {id:"ng412-1", num:"01", slots:[{day:"จ", time:"13:00–16:00", room:"A55-640"}], instr:"อ.Michael Chen", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng412-2", num:"02", slots:[{day:"อ", time:"17:00–20:00", room:"A55-641"}], instr:"อ.Laura Garcia", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040413", nameTh:"ภาษาไทยเพื่อการสื่อสารเชิงวิชาการ", nameEn:"Thai for Academic Communication", credit:"2(2-0-4)", group:"language",
+      sections:[
+        {id:"ng413-1", num:"01", slots:[{day:"พ", time:"09:00–12:00", room:"A55-642"}], instr:"อ.David Kim", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng413-2", num:"02", slots:[{day:"พฤ", time:"13:00–16:00", room:"A55-643"}], instr:"อ.Sophie Martin", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040414", nameTh:"ภาษาเยอรมันเพื่อการสื่อสาร", nameEn:"German for Communication", credit:"3(3-0-6)", group:"language",
+      sections:[
+        {id:"ng414-1", num:"01", slots:[{day:"ศ", time:"17:00–20:00", room:"A55-644"}], instr:"อ.ดร.วรรณา ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng414-2", num:"02", slots:[{day:"ส", time:"09:00–12:00", room:"A55-645"}], instr:"ผศ.ดร.สุรชัย ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040415", nameTh:"ภาษามาเลย์เพื่อการสื่อสาร", nameEn:"Malay for Communication", credit:"3(3-0-6)", group:"language",
+      sections:[
+        {id:"ng415-1", num:"01", slots:[{day:"จ", time:"13:00–16:00", room:"A55-646"}], instr:"อ.ดร.ปกรณ์ ...", cap:50, taken:42, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng415-2", num:"02", slots:[{day:"อ", time:"17:00–20:00", room:"A55-647"}], instr:"รศ.ดร.มณี ...", cap:60, taken:30, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    }
+    ,
+    {
+      code:"90010111", nameTh:"จริยธรรมและความรับผิดชอบทางวิชาชีพ", nameEn:"Professional Ethics and Responsibility", credit:"2(2-0-4)", group:"identity",
+      sections:[
+        {id:"ng111-1", num:"01", slots:[{day:"จ", time:"13:00–16:00", room:"A230"}], instr:"อ.ดร.บุญรอด ...", cap:60, taken:27, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng111-2", num:"02", slots:[{day:"พฤ", time:"09:00–12:00", room:"A231"}], instr:"อ.สุนีย์ ...", cap:60, taken:52, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90020213", nameTh:"การฝึกสติเพื่อการทำงาน", nameEn:"Mindfulness at Work", credit:"1(1-0-2)", group:"personal",
+      sections:[
+        {id:"ng213-1", num:"01", slots:[{day:"อ", time:"13:00–16:00", room:"A340"}], instr:"อ.ปาริชาติ ...", cap:50, taken:19, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90030313", nameTh:"การวางแผนอาชีพและความพร้อมสู่การทำงาน", nameEn:"Career Planning and Work Readiness", credit:"2(2-0-4)", group:"management",
+      sections:[
+        {id:"ng313-1", num:"01", slots:[{day:"จ", time:"13:00–16:00", room:"A450"}], instr:"อ.ดร.ชนากานต์ ...", cap:55, taken:24, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng313-2", num:"02", slots:[{day:"ศ", time:"13:00–16:00", room:"A451"}], instr:"อ.ดร.รัชนี ...", cap:55, taken:46, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040416", nameTh:"ภาษาอังกฤษเพื่อการสื่อสารในที่ทำงาน", nameEn:"English for Workplace Communication", credit:"3(3-0-6)", group:"language",
+      sections:[
+        {id:"ng416-1", num:"01", hyflex:true, slots:[{day:"ส", time:"09:00–12:00", room:"Online + A504"}], instr:"อ.Anna Wu", cap:50, taken:20, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng416-2", num:"02", slots:[{day:"อ", time:"17:00–20:00", room:"A421"}], instr:"อ.Kevin Marsh", cap:50, taken:33, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040417", nameTh:"ภาษาจีนเพื่อการสื่อสาร 2", nameEn:"Chinese for Communication 2", credit:"3(3-0-6)", group:"language",
+      sections:[
+        {id:"ng417-1", num:"01", hyflex:true, slots:[{day:"ส", time:"13:00–16:00", room:"Online + A505"}], instr:"อ.Li Wei", cap:45, taken:12, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    },
+    {
+      code:"90040418", nameTh:"ภาษาญี่ปุ่นเพื่อการสื่อสาร 2", nameEn:"Japanese for Communication 2", credit:"3(3-0-6)", group:"language",
+      sections:[
+        {id:"ng418-1", num:"01", hyflex:true, slots:[{day:"ส", time:"09:00–12:00", room:"Online + A506"}], instr:"อ.Yuki Tanaka", cap:40, taken:38, examMid:EXAM_SELF, examFinal:EXAM_SELF},
+        {id:"ng418-2", num:"02", slots:[{day:"ศ", time:"09:00–12:00", room:"A422"}], instr:"อ.Yuki Tanaka", cap:40, taken:15, examMid:EXAM_SELF, examFinal:EXAM_SELF}
+      ]
+    }
+  ];
+
+  var TRACK_DESC = {
+    required: "รายวิชาบังคับของหลักสูตรที่ท่านลงทะเบียนไว้ (วิศวกรรมระบบไอโอทีและสารสนเทศ / ฟิสิกส์อุตสาหกรรม ชั้นปีที่ 1)",
+    gened: "รายวิชาศึกษาทั่วไป (GenEd) ที่เปิดสอนในภาคการศึกษานี้ จัดกลุ่มตาม 4 กลุ่มทักษะหลักของ สจล."
+  };
+
+  var CHECK_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>';
+  var SELF_ICON = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>';
+  var EXAM_ICON = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><circle cx="12" cy="15" r="2" fill="currentColor" stroke="none"/></svg>';
+  var HYFLEX_ICON = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg>';
+  var DAY_TH = ["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์"];
+  var MONTH_TH = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+
+  var cart = {};              // sectionId -> {code, name, credit, sec}
+  var confirmedIds = {};      // sectionId -> true, once it has appeared in a confirmed registration
+  var everConfirmed = false;  // whether any confirmation has ever happened
+  var historyLog = [];
+  var historySeq = 0;
+  var cartState = "editing"; // editing | review | confirmed
+  var activeTrack = "required";
+  var openOnly = false;
+  var dayFilter = "";        // "" | "จ" | "อ" | "พ" | "พฤ" | "ศ" | "ส"
+  var periodFilter = "all";  // all | morning | afternoon | evening
+  var groupFilter = "";      // "" | "identity" | "personal" | "management" | "language" (GenEd tab only)
+  var hyflexOnly = false;    // GenEd tab only
+
+  var results = document.getElementById("results");
+  var emptyNote = document.getElementById("empty");
+  var trackDesc = document.getElementById("track-desc");
+  var cartBody = document.getElementById("cart-body");
+  var qInput = document.getElementById("q");
+  var openChip = document.getElementById("chip-open");
+  var dayFilterEl = document.getElementById("dayFilter");
+  var periodFilterEl = document.getElementById("periodFilter");
+  var groupFiltersEl = document.getElementById("groupFilters");
+  var groupFiltersChipsEl = document.getElementById("groupFiltersChips");
+  var hyflexChipEl = document.getElementById("chip-hyflex");
+  var mobileCartBarEl = document.getElementById("mobileCartBar");
+  var mobileCartCountEl = document.getElementById("mobileCartCount");
+  var mobileCartCreditsEl = document.getElementById("mobileCartCredits");
+  var mobileCartBtnEl = document.getElementById("mobileCartBtn");
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+
+  function creditNum(str){
+    var m = /^(\d+)/.exec(str);
+    return m ? parseInt(m[1],10) : 0;
+  }
+
+  function parseDays(dayStr){
+    return dayStr.split(",").map(function(s){ return s.trim(); });
+  }
+  function parseTimeRange(timeStr){
+    var parts = timeStr.split("–");
+    function toMin(t){
+      var hm = t.trim().split(":");
+      return parseInt(hm[0],10) * 60 + parseInt(hm[1],10);
+    }
+    return {start: toMin(parts[0]), end: toMin(parts[1])};
+  }
+  function slotsOverlap(slotA, slotB){
+    var daysA = parseDays(slotA.day), daysB = parseDays(slotB.day);
+    var sharedDay = daysA.some(function(d){ return daysB.indexOf(d) !== -1; });
+    if(!sharedDay) return false;
+    var ra = parseTimeRange(slotA.time), rb = parseTimeRange(slotB.time);
+    return ra.start < rb.end && rb.start < ra.end;
+  }
+  function sectionsOverlap(secA, secB){
+    for(var i=0;i<secA.slots.length;i++){
+      for(var j=0;j<secB.slots.length;j++){
+        if(slotsOverlap(secA.slots[i], secB.slots[j])) return true;
+      }
+    }
+    return false;
+  }
+  function formatThaiDateTime(d){
+    function pad(n){ return (n<10?"0":"")+n; }
+    return DAY_TH[d.getDay()] + " " + d.getDate() + " " + MONTH_TH[d.getMonth()] + " " + (d.getFullYear()+543) +
+      " " + pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
+  }
+
+  // Slot's period-of-day bucket, based on its start time.
+  function slotPeriod(slot){
+    var r = parseTimeRange(slot.time);
+    if(r.start < 720) return "morning";      // before 12:00
+    if(r.start < 960) return "afternoon";    // 12:00–16:00
+    return "evening";                        // 16:00 onward
+  }
+
+  var KIND_LABEL = {lecture:"ทฤษฎี", lab:"ปฏิบัติ", mixed:"ทฤษฎี+ปฏิบัติ"};
+
+  // A section can be lecture-only, lab-only, or have both — based on each
+  // slot's own kind ("lecture" by default, or "lab").
+  function sectionKind(sec){
+    var hasLecture = false, hasLab = false;
+    sec.slots.forEach(function(slot){
+      if(slot.kind === "lab") hasLab = true;
+      else hasLecture = true;
+    });
+    if(hasLecture && hasLab) return "mixed";
+    return hasLab ? "lab" : "lecture";
+  }
+
+  // Whether a section has at least one slot matching the active day/period filter.
+  function sectionMatchesDayPeriod(sec){
+    if(!dayFilter) return true;
+    return sec.slots.some(function(slot){
+      var days = parseDays(slot.day);
+      if(days.indexOf(dayFilter) === -1) return false;
+      if(periodFilter === "all") return true;
+      return slotPeriod(slot) === periodFilter;
+    });
+  }
+
+  // Non-self exam dates a section has, tagged with which exam they belong to.
+  function examDates(sec){
+    var list = [];
+    if(sec.examMid && !sec.examMid.self) list.push({label:"กลางภาค", date:sec.examMid.date, time:sec.examMid.time});
+    if(sec.examFinal && !sec.examFinal.self) list.push({label:"ปลายภาค", date:sec.examFinal.date, time:sec.examFinal.time});
+    return list;
+  }
+  // Returns {mine, theirs} for the first matching exam date shared between two sections, else null.
+  function examConflict(secMine, secTheirs){
+    var mine = examDates(secMine), theirs = examDates(secTheirs);
+    for(var i=0;i<mine.length;i++){
+      for(var j=0;j<theirs.length;j++){
+        if(mine[i].date === theirs[j].date) return {mine: mine[i], theirs: theirs[j]};
+      }
+    }
+    return null;
+  }
+
+  // Returns null if sec can be added freely, otherwise a block descriptor:
+  // {type:"same-course", item} or {type:"conflict", item} or {type:"exam-conflict", item, examInfo}
+  function blockReason(course, sec){
+    var ids = Object.keys(cart);
+    for(var i=0;i<ids.length;i++){
+      var item = cart[ids[i]];
+      if(item.code === course.code){
+        return {type:"same-course", item: item};
+      }
+    }
+    for(var j=0;j<ids.length;j++){
+      var it = cart[ids[j]];
+      if(it.code === course.code) continue;
+      if(sectionsOverlap(it.sec, sec)){
+        return {type:"conflict", item: it};
+      }
+      var ec = examConflict(sec, it.sec);
+      if(ec){
+        return {type:"exam-conflict", item: it, examInfo: ec};
+      }
+    }
+    return null;
+  }
+
+  var DAY_FULL = {"จ":"จันทร์","อ":"อังคาร","พ":"พุธ","พฤ":"พฤหัสบดี","ศ":"ศุกร์","ส":"เสาร์"};
+  function dayNames(list){
+    return list.map(function(d){ return DAY_FULL[d] || d; }).join(", ");
+  }
+  // First pair of slots (one from each section) that overlap, with the shared days.
+  function findSlotOverlap(secA, secB){
+    for(var i=0;i<secA.slots.length;i++){
+      for(var j=0;j<secB.slots.length;j++){
+        var a = secA.slots[i], b = secB.slots[j];
+        if(slotsOverlap(a, b)){
+          var db = parseDays(b.day);
+          var shared = parseDays(a.day).filter(function(d){ return db.indexOf(d) !== -1; });
+          return {mine: a, theirs: b, days: shared};
+        }
+      }
+    }
+    return null;
+  }
+  // Human-readable description of why a section cannot be added.
+  // label = which kind of clash, text = exactly what clashes (day / time / exam date).
+  function blockMessage(block, sec){
+    var other = block.item.code + " กลุ่ม " + block.item.sec.num;
+    if(block.type === "same-course"){
+      return {label:"เลือกวิชานี้ไว้แล้ว", text:"เลือกกลุ่ม " + block.item.sec.num + " ของวิชานี้ไว้แล้ว (ลงได้ 1 กลุ่ม/วิชา)"};
+    }
+    if(block.type === "conflict"){
+      var ov = findSlotOverlap(sec, block.item.sec);
+      var detail = ov
+        ? "วัน" + dayNames(ov.days) + " เวลา " + ov.mine.time + " ทับกับ " + other + " (เวลา " + ov.theirs.time + ")"
+        : "ชนกับ " + other;
+      return {label:"วัน-เวลาเรียนชนกัน", text:detail};
+    }
+    var ei = block.examInfo;
+    return {
+      label:"วันสอบชนกัน",
+      text:"สอบ" + ei.mine.label + " " + ei.mine.date + " (" + ei.mine.time + ") ตรงกับสอบ" + ei.theirs.label + "ของ " + other + " (" + ei.theirs.time + ")"
+    };
+  }
+
+  function seatInfo(sec){
+    var ratio = sec.taken / sec.cap;
+    var left = sec.cap - sec.taken;
+    if(sec.taken >= sec.cap) return {cls:"bad", label:"เต็ม · " + sec.taken + "/" + sec.cap};
+    if(ratio >= 0.85) return {cls:"warn", label:"ใกล้เต็ม · เหลือ " + left};
+    return {cls:"good", label:"ว่าง · เหลือ " + left};
+  }
+
+  function showToast(msg, type){
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.style.background = type === "error" ? "var(--bad)" : "var(--ink)";
+    t.style.color = type === "error" ? "#fff" : "var(--bg)";
+    t.classList.add("show");
+    clearTimeout(showToast._h);
+    showToast._h = setTimeout(function(){ t.classList.remove("show"); }, type === "error" ? 3000 : 2200);
+  }
+
+  function matches(course, query){
+    if(!query) return true;
+    var hay = (course.code + " " + course.nameTh + " " + course.nameEn).toLowerCase();
+    return hay.indexOf(query) !== -1;
+  }
+
+  function filteredSections(course){
+    return course.sections.filter(function(s){
+      if(openOnly && s.taken >= s.cap) return false;
+      if(hyflexOnly && !s.hyflex) return false;
+      if(!sectionMatchesDayPeriod(s)) return false;
+      return true;
+    });
+  }
+
+  function formatSchedule(sec){
+    return sec.slots.map(function(slot){ return slot.day + " " + slot.time; }).join(", ");
+  }
+
+  function addHistory(type, code, name, secNum, schedule){
+    historySeq++;
+    historyLog.push({seq: historySeq, type: type, code: code, name: name, secNum: secNum, schedule: schedule, ts: formatThaiDateTime(new Date())});
+    renderHistory();
+  }
+
+  function removeFromCart(id, opts){
+    var item = cart[id];
+    if(!item) return;
+    var wasConfirmedItem = !!confirmedIds[id];
+    delete cart[id];
+    if(wasConfirmedItem){
+      addHistory("ถอน", item.code, item.name, item.sec.num, formatSchedule(item.sec));
+      delete confirmedIds[id];
+    }
+    if(!opts || !opts.silent){
+      showToast("ถอน " + item.code + " กลุ่ม " + item.sec.num + " แล้ว");
+    }
+  }
+
+  function toggleSection(course, sec){
+    var wasConfirmed = cartState === "confirmed";
+    var wasReview = cartState === "review";
+    var inCart = !!cart[sec.id];
+
+    if(inCart){
+      removeFromCart(sec.id);
+    } else {
+      var block = blockReason(course, sec);
+      if(block){
+        if(block.type === "same-course"){
+          showToast("ลงทะเบียนได้ 1 กลุ่มต่อวิชา — ถอนกลุ่ม " + block.item.sec.num + " ที่เลือกไว้ก่อน", "error");
+        } else {
+          var bm = blockMessage(block, sec);
+          showToast(bm.label + " · " + bm.text, "error");
+        }
+        return;
+      }
+      cart[sec.id] = {code: course.code, name: course.nameTh, credit: creditNum(course.credit), sec: sec};
+      showToast("เพิ่ม " + course.code + " กลุ่ม " + sec.num + " แล้ว");
+      qInput.value = "";   // back to the default (empty) search after adding a course
+    }
+
+    if(wasConfirmed || wasReview){
+      cartState = "editing";
+    }
+    render();
+    renderCart();
+  }
+
+  function buildCourseCard(course, groupCss){
+    var secs = filteredSections(course);
+    if(secs.length === 0) return null;
+
+    var el = document.createElement("div");
+    el.className = "course" + (groupCss ? " " + groupCss : "");
+
+    var head = document.createElement("div");
+    head.className = "course-head";
+    head.innerHTML =
+      '<div><div class="course-code">' + course.code + '</div>' +
+      '<div class="course-name">' + course.nameTh + '</div>' +
+      '<div class="course-name-en">' + course.nameEn + '</div></div>' +
+      '<div class="credit-tag">' + course.credit + '</div>';
+    el.appendChild(head);
+
+    var secLabel = document.createElement("div");
+    secLabel.className = "sec-label-row";
+    secLabel.textContent = "เลือกกลุ่มเรียน (Section)";
+    el.appendChild(secLabel);
+
+    var secWrap = document.createElement("div");
+    secWrap.className = "sections";
+
+    secs.forEach(function(sec){
+      var si = seatInfo(sec);
+      var inCart = !!cart[sec.id];
+      var full = sec.taken >= sec.cap;
+      var block = inCart ? null : blockReason(course, sec);
+
+      var card = document.createElement("div");
+      card.className = "sec-card" + (inCart ? " selected" : "") + (block ? " blocked" : "");
+
+      var top = document.createElement("div");
+      top.className = "sec-card-top";
+      var kind = sectionKind(sec);
+      top.innerHTML =
+        '<span class="sec-badge"><span class="sec-badge-num">' + sec.num + '</span>กลุ่มเรียน ' + sec.num + '</span>' +
+        '<span class="sec-type-tag ' + kind + '">' + KIND_LABEL[kind] + '</span>' +
+        (sec.hyflex ? '<span class="sec-type-tag hyflex">' + HYFLEX_ICON + ' HyFlex</span>' : '') +
+        '<span class="sec-check">' + CHECK_SVG + ' เลือกแล้ว</span>' +
+        '<span class="seat-badge ' + si.cls + '">' + si.label + '</span>';
+      card.appendChild(top);
+
+      var meta = document.createElement("div");
+      meta.className = "sec-meta";
+      meta.innerHTML = sec.slots.map(function(slot){
+        return '<b>' + slot.day + '</b> ' + slot.time + ' · ห้อง ' + slot.room;
+      }).join('<br>') + '<br>' + sec.instr;
+      card.appendChild(meta);
+
+      var examRow = document.createElement("div");
+      examRow.className = "exam-row";
+      function examChip(label, exam){
+        if(exam.self){
+          return '<span class="exam-chip self">' + SELF_ICON + '<b>' + label + '</b> จัดสอบเอง</span>';
+        }
+        return '<span class="exam-chip">' + EXAM_ICON + '<b>' + label + '</b> ' + exam.date + ' ' + exam.time + '</span>';
+      }
+      examRow.innerHTML = examChip("กลางภาค", sec.examMid) + examChip("ปลายภาค", sec.examFinal);
+      card.appendChild(examRow);
+
+      if(block){
+        var reason = document.createElement("div");
+        reason.className = "block-reason";
+        var warnIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>';
+        var bmsg = blockMessage(block, sec);
+        reason.innerHTML = warnIcon + ' <span><b>' + bmsg.label + '</b> · ' + bmsg.text + '</span>';
+        card.appendChild(reason);
+      }
+
+      var bottom = document.createElement("div");
+      bottom.className = "sec-card-bottom";
+      var btn = document.createElement("button");
+      btn.className = "btn" + (inCart ? " added" : "");
+      btn.textContent = inCart ? "ถอนรายวิชา" : (full ? "เต็มแล้ว" : (block ? "เลือกไม่ได้" : "เพิ่ม"));
+      if((full || block) && !inCart) btn.disabled = true;
+      btn.addEventListener("click", function(e){
+        e.stopPropagation();
+        toggleSection(course, sec);
+      });
+      bottom.appendChild(btn);
+      card.appendChild(bottom);
+
+      secWrap.appendChild(card);
+    });
+
+    el.appendChild(secWrap);
+    return el;
+  }
+
+  function render(){
+    var query = qInput.value.trim().toLowerCase();
+    results.innerHTML = "";
+    var shown = 0;
+
+    trackDesc.textContent = TRACK_DESC[activeTrack];
+
+    if(activeTrack === "required"){
+      REQUIRED_COURSES.forEach(function(course){
+        if(!matches(course, query)) return;
+        var card = buildCourseCard(course, "");
+        if(card){ results.appendChild(card); shown++; }
+      });
+    } else {
+      GROUP_ORDER.forEach(function(groupKey){
+        if(groupFilter && groupFilter !== groupKey) return;
+        var group = GROUPS[groupKey];
+        var courses = GENED_COURSES.filter(function(c){ return c.group === groupKey && matches(c, query); });
+        var cards = [];
+        courses.forEach(function(course){
+          var card = buildCourseCard(course, group.css);
+          if(card) cards.push(card);
+        });
+        if(cards.length === 0) return;
+
+        var head = document.createElement("div");
+        head.className = "group-head";
+        head.innerHTML =
+          '<span class="group-dot" style="background:var(--' + group.token + ')"></span>' +
+          '<span class="group-name">' + group.th + ' <span class="group-name-en">/ ' + group.en + '</span></span>' +
+          '<span class="group-count">' + cards.length + ' วิชา</span>';
+        results.appendChild(head);
+        cards.forEach(function(c){ results.appendChild(c); shown++; });
+      });
+    }
+
+    emptyNote.hidden = shown > 0;
+  }
+
+  function cartItemsHtml(readonly){
+    var ids = Object.keys(cart);
+    var html = "";
+    ids.forEach(function(id){
+      var item = cart[id];
+      var slotsHtml = item.sec.slots.map(function(slot){
+        return slot.day + ' ' + slot.time + ' · ' + slot.room;
+      }).join('<br>');
+      html += '<div class="cart-item" data-id="' + id + '">' +
+        '<div class="cart-item-top">' +
+          '<div><div class="cart-item-title">' + CHECK_SVG + item.code + ' กลุ่ม ' + item.sec.num + '</div>' +
+          '<div class="cart-item-meta">' + item.name + '</div>' +
+          '<div class="cart-item-meta tabular">' + slotsHtml + '</div></div>' +
+          '<div class="credit-tag tabular">' + item.credit + '</div>' +
+        '</div>' +
+        (readonly === "confirmed"
+          ? '<div class="cart-item-actions"><span class="confirmed-tag">' + CHECK_SVG + ' ยืนยันแล้ว</span></div>'
+          : (readonly === "review" ? "" :
+            '<div class="cart-item-actions"><button class="btn danger" data-remove="' + id + '">ถอนรายวิชานี้</button></div>')
+        ) +
+      '</div>';
+    });
+    return html;
+  }
+
+  function creditSum(){
+    var total = 0;
+    Object.keys(cart).forEach(function(id){ total += cart[id].credit; });
+    return total;
+  }
+
+  function wireRemoveButtons(){
+    Array.prototype.slice.call(cartBody.querySelectorAll("[data-remove]")).forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var id = btn.getAttribute("data-remove");
+        removeFromCart(id);
+        render();
+        renderCart();
+      });
+    });
+  }
+
+  function renderHistory(){
+    var tbody = document.getElementById("history-tbody");
+    var emptyNote = document.getElementById("history-empty");
+    if(historyLog.length === 0){
+      tbody.innerHTML = "";
+      emptyNote.hidden = false;
+      return;
+    }
+    emptyNote.hidden = true;
+    var ADD_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12h14"/></svg>';
+    var DROP_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14"/></svg>';
+    tbody.innerHTML = historyLog.map(function(row){
+      var isDrop = row.type === "ถอน";
+      var typeCls = isDrop ? "drop" : "add";
+      var rowCls = isDrop ? "row-drop" : "row-add";
+      return '<tr class="' + rowCls + '">' +
+        '<td class="tabular">' + row.seq + '</td>' +
+        '<td><span class="history-type ' + typeCls + '">' + (isDrop ? DROP_ICON : ADD_ICON) + row.type + '</span></td>' +
+        '<td class="tabular">' + row.code + '</td>' +
+        '<td>' + row.name + '</td>' +
+        '<td class="tabular">' + row.secNum + '</td>' +
+        '<td class="history-schedule tabular">' + (row.schedule || "—") + '</td>' +
+        '<td class="history-ts tabular">' + row.ts + '</td>' +
+      '</tr>';
+    }).join("");
+  }
+
+  // Shared state transitions — called from the desktop cart panel's own
+  // buttons AND from the fixed mobile action bar, so both stay in sync.
+  function goToReview(){
+    cartState = "review";
+    renderCart();
+  }
+  function goBackToEditing(){
+    cartState = "editing";
+    renderCart();
+  }
+  function confirmRegistration(){
+    var count = Object.keys(cart).length;
+    var isFirst = !everConfirmed;
+    Object.keys(cart).forEach(function(id){
+      if(!confirmedIds[id]){
+        var item = cart[id];
+        addHistory(isFirst ? "ลงทะเบียนปกติ" : "เพิ่ม", item.code, item.name, item.sec.num, formatSchedule(item.sec));
+        confirmedIds[id] = true;
+      }
+    });
+    everConfirmed = true;
+    cartState = "confirmed";
+    showToast("ลงทะเบียนสำเร็จทั้งหมด " + count + " รายวิชา");
+    renderCart();
+  }
+
+  // On narrow screens the cart panel sits below the whole course list, so
+  // after the fixed mobile bar changes the cart's state, bring that panel
+  // into view instead of leaving the user looking at an unchanged screen.
+  function scrollToCartPanel(){
+    var panel = document.getElementById("cart-panel");
+    if(!panel) return;
+    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    panel.scrollIntoView({behavior: reduceMotion ? "auto" : "smooth", block:"start"});
+  }
+
+  // Fixed bottom bar shown only on narrow screens, so the primary cart
+  // action (review/confirm/edit) is always reachable without scrolling
+  // all the way down past the course list to the cart panel.
+  function renderMobileBar(count, total){
+    if(count === 0 && cartState !== "confirmed"){
+      mobileCartBarEl.hidden = true;
+      document.body.classList.remove("has-mobile-cart-bar");
+      return;
+    }
+    mobileCartCountEl.textContent = count + " วิชา";
+    mobileCartCreditsEl.textContent = total + " หน่วยกิต";
+    mobileCartBtnEl.onclick = null;
+    if(cartState === "editing"){
+      mobileCartBtnEl.textContent = "ตรวจสอบก่อนยืนยัน";
+      mobileCartBtnEl.disabled = count === 0;
+      mobileCartBtnEl.onclick = function(){ goToReview(); scrollToCartPanel(); };
+    } else if(cartState === "review"){
+      mobileCartBtnEl.textContent = "ยืนยันลงทะเบียน";
+      mobileCartBtnEl.disabled = false;
+      mobileCartBtnEl.onclick = function(){ confirmRegistration(); scrollToCartPanel(); };
+    } else if(cartState === "confirmed"){
+      mobileCartBtnEl.textContent = "แก้ไขการลงทะเบียน";
+      mobileCartBtnEl.disabled = false;
+      mobileCartBtnEl.onclick = function(){ goBackToEditing(); scrollToCartPanel(); };
+    }
+    mobileCartBarEl.hidden = false;
+    document.body.classList.add("has-mobile-cart-bar");
+  }
+
+  function renderCart(){
+    var ids = Object.keys(cart);
+    var count = ids.length;
+    var total = creditSum();
+    renderMobileBar(count, total);
+
+    if(count === 0 && cartState !== "confirmed"){
+      cartBody.innerHTML =
+        '<span class="cart-state-label editing">ยังไม่ได้เลือก</span>' +
+        '<p class="empty-note">ยังไม่ได้เลือกรายวิชาใด — เลือกกลุ่มเรียนจากรายการด้านซ้าย แล้วกด "เพิ่ม"</p>';
+      return;
+    }
+
+    if(cartState === "editing"){
+      cartBody.innerHTML =
+        '<span class="cart-state-label editing">เลือกไว้ ยังไม่ยืนยัน</span>' +
+        '<div class="selected-group">' + cartItemsHtml(false) + '</div>' +
+        '<div class="cart-total"><span>หน่วยกิตรวม</span><span class="tabular">' + total + '</span></div>' +
+        '<div class="cart-actions">' +
+          '<button class="btn block" id="btn-review"' + (count===0?" disabled":"") + '>ยืนยันการลงทะเบียน (' + count + ' รายวิชา)</button>' +
+        '</div>';
+      wireRemoveButtons();
+      var reviewBtn = document.getElementById("btn-review");
+      if(reviewBtn) reviewBtn.addEventListener("click", goToReview);
+
+    } else if(cartState === "review"){
+      cartBody.innerHTML =
+        '<span class="cart-state-label review">ตรวจสอบก่อนยืนยัน</span>' +
+        '<div class="review-note">กรุณาตรวจสอบรายวิชาและกลุ่มเรียนให้ถูกต้องก่อนกดยืนยัน เมื่อยืนยันแล้วจะถือว่าลงทะเบียนสำเร็จ</div>' +
+        '<div class="selected-group">' + cartItemsHtml("review") + '</div>' +
+        '<div class="cart-total"><span>หน่วยกิตรวม</span><span class="tabular">' + total + '</span></div>' +
+        '<div class="cart-actions">' +
+          '<div class="cart-actions-row">' +
+            '<button class="btn secondary" id="btn-back">ย้อนกลับไปแก้ไข</button>' +
+            '<button class="btn" id="btn-confirm">ยืนยันลงทะเบียน</button>' +
+          '</div>' +
+        '</div>';
+      document.getElementById("btn-back").addEventListener("click", goBackToEditing);
+      document.getElementById("btn-confirm").addEventListener("click", confirmRegistration);
+
+    } else if(cartState === "confirmed"){
+      cartBody.innerHTML =
+        '<div class="success-banner">' + CHECK_SVG.replace('width="13" height="13"','width="18" height="18"') +
+          '<div class="success-banner-text"><b>ลงทะเบียนสำเร็จ</b>ยืนยันแล้ว ' + count + ' รายวิชา รวม ' + total + ' หน่วยกิต</div>' +
+        '</div>' +
+        '<div class="selected-group">' + cartItemsHtml("confirmed") + '</div>' +
+        '<div class="cart-total"><span>หน่วยกิตรวม</span><span class="tabular">' + total + '</span></div>' +
+        '<div class="cart-actions">' +
+          '<button class="btn secondary block" id="btn-edit">แก้ไขการลงทะเบียน</button>' +
+        '</div>';
+      document.getElementById("btn-edit").addEventListener("click", goBackToEditing);
+    }
+  }
+
+  document.getElementById("jump-top").addEventListener("click", function(e){
+    e.preventDefault(); window.scrollTo({top:0, behavior:"smooth"});
+  });
+  qInput.addEventListener("input", render);
+  openChip.addEventListener("click", function(){
+    openOnly = !openOnly;
+    openChip.setAttribute("aria-pressed", String(openOnly));
+    render();
+  });
+
+  // Build the skill-group filter chips for the GenEd tab (one per GROUP_ORDER entry,
+  // plus an implicit "all groups" state when none is pressed).
+  function updateGroupChipsUI(){
+    Array.prototype.slice.call(groupFiltersChipsEl.querySelectorAll(".group-chip")).forEach(function(btn){
+      btn.setAttribute("aria-pressed", String(btn.getAttribute("data-group") === groupFilter));
+    });
+  }
+  (function buildGroupChips(){
+    groupFiltersChipsEl.innerHTML = GROUP_ORDER.map(function(groupKey){
+      var group = GROUPS[groupKey];
+      return '<button type="button" class="group-chip ' + group.css + '" data-group="' + groupKey + '" aria-pressed="false">' +
+        '<span class="group-dot" style="background:var(--' + group.token + ')"></span>' + group.short +
+      '</button>';
+    }).join("");
+    Array.prototype.slice.call(groupFiltersChipsEl.querySelectorAll(".group-chip")).forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var key = btn.getAttribute("data-group");
+        groupFilter = (groupFilter === key) ? "" : key;
+        updateGroupChipsUI();
+        render();
+      });
+    });
+  })();
+  hyflexChipEl.addEventListener("click", function(){
+    hyflexOnly = !hyflexOnly;
+    hyflexChipEl.setAttribute("aria-pressed", String(hyflexOnly));
+    render();
+  });
+  dayFilterEl.addEventListener("change", function(){
+    dayFilter = dayFilterEl.value;
+    periodFilterEl.disabled = !dayFilter;
+    if(!dayFilter){
+      periodFilter = "all";
+      periodFilterEl.value = "all";
+    }
+    render();
+  });
+  periodFilterEl.addEventListener("change", function(){
+    periodFilter = periodFilterEl.value;
+    render();
+  });
+  tabs.forEach(function(tab){
+    tab.addEventListener("click", function(){
+      tabs.forEach(function(t){ t.setAttribute("aria-selected","false"); });
+      tab.setAttribute("aria-selected","true");
+      var nextTrack = tab.getAttribute("data-track");
+      if(nextTrack !== activeTrack){
+        // switching page: every filter goes back to its default
+        qInput.value = "";
+        openOnly = false;
+        openChip.setAttribute("aria-pressed", "false");
+        dayFilter = "";
+        dayFilterEl.value = "";
+        periodFilter = "all";
+        periodFilterEl.value = "all";
+        periodFilterEl.disabled = true;
+        groupFilter = "";
+        hyflexOnly = false;
+        hyflexChipEl.setAttribute("aria-pressed", "false");
+        updateGroupChipsUI();
+      }
+      activeTrack = nextTrack;
+      groupFiltersEl.hidden = (activeTrack !== "gened");
+      render();
+    });
+  });
+
+  render();
+  renderCart();
+  renderHistory();
+})();
+</script>
+</body>
+</html>
+
+</body></html>
